@@ -36,88 +36,112 @@ export const DIDLookup = () => {
   };
 
   return (
-    <div className="glass rounded-2xl p-8 animate-fade-in">
-      <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-        <span className="text-3xl">🔍</span>
+    <div className="glass rounded-3xl p-8 animate-fade-in shadow-2xl border border-white/20">
+      <h2 className="text-3xl font-bold text-white mb-8 flex items-center gap-4">
+        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-2xl">
+          🔍
+        </div>
         Lookup DID Profile
       </h2>
       
-      <form onSubmit={handleSearch} className="mb-6">
+      <form onSubmit={handleSearch} className="mb-8">
         <div className="flex flex-col sm:flex-row gap-4">
-          <input
-            type="text"
-            value={searchDid}
-            onChange={(e) => setSearchDid(e.target.value)}
-            className="flex-1 bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/50 transition-all"
-            placeholder="Enter DID (e.g., did:key:z6Mk...)"
-          />
+          <div className="flex-1 relative">
+            <input
+              type="text"
+              value={searchDid}
+              onChange={(e) => setSearchDid(e.target.value)}
+              className="w-full bg-white/10 border border-white/20 rounded-xl px-6 py-4 text-white placeholder-white/50 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/50 transition-all backdrop-blur-sm"
+              placeholder="Enter DID (e.g., did:key:z6Mk...)"
+            />
+            <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white/30">
+              🔗
+            </div>
+          </div>
           <button
             type="submit"
             disabled={isSearching || !searchDid.trim()}
-            className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 disabled:opacity-50 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 min-w-[120px]"
+            className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 disabled:opacity-50 text-white font-bold py-4 px-8 rounded-xl transition-all duration-200 flex items-center justify-center gap-3 min-w-[140px] hover:scale-105 shadow-lg"
           >
             {isSearching ? (
               <>
-                <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
                 Searching...
               </>
             ) : (
-              <>🔍 Search</>
+              <>
+                <span>🔍</span>
+                Search
+              </>
             )}
           </button>
         </div>
       </form>
 
       {error && (
-        <div className="bg-red-500/20 border border-red-500/50 rounded-lg p-4 mb-4 animate-fade-in">
-          <div className="flex items-center gap-2">
-            <span className="text-red-200">⚠️</span>
-            <p className="text-red-200">{error}</p>
+        <div className="bg-gradient-to-r from-red-500/20 to-pink-500/20 border border-red-400/30 rounded-xl p-6 mb-6 animate-fade-in backdrop-blur-sm">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-red-500/30 flex items-center justify-center">
+              ⚠️
+            </div>
+            <p className="text-red-200 font-medium">{error}</p>
           </div>
         </div>
       )}
 
       {searchResult && (
-        <div className="bg-white/10 rounded-xl p-6 animate-fade-in border border-white/20">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-white">Profile Found</h3>
-            <span className="px-3 py-1 rounded-full text-sm font-medium bg-green-500/20 text-green-200 flex items-center gap-1">
-              ✅ Verified
-            </span>
+        <div className="bg-gradient-to-br from-white/10 to-white/5 rounded-2xl p-8 animate-fade-in border border-white/10 backdrop-blur-sm">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-xl font-bold text-white flex items-center gap-3">
+              <span>👤</span>
+              Profile Found
+            </h3>
+            <div className="px-4 py-2 rounded-full text-sm font-semibold bg-green-500/20 text-green-200 flex items-center gap-2 border border-green-400/30">
+              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+              Verified
+            </div>
           </div>
           
-          <div className="flex flex-col sm:flex-row items-start space-y-4 sm:space-y-0 sm:space-x-6">
+          <div className="flex flex-col sm:flex-row items-start space-y-6 sm:space-y-0 sm:space-x-8">
             {searchResult.profile.avatarUrl ? (
-              <img 
-                src={searchResult.profile.avatarUrl} 
-                alt="Avatar" 
-                className="w-16 h-16 rounded-full object-cover border-2 border-white/20"
-                onError={(e) => { 
-                  const target = e.target as HTMLImageElement;
-                  target.style.display = 'none';
-                }}
-              />
+              <div className="relative">
+                <img 
+                  src={searchResult.profile.avatarUrl} 
+                  alt="Avatar" 
+                  className="w-20 h-20 rounded-2xl object-cover border-4 border-white/20 shadow-lg"
+                  onError={(e) => { 
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                  }}
+                />
+                <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 border-2 border-white rounded-full"></div>
+              </div>
             ) : (
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-400 to-blue-400 flex items-center justify-center text-xl text-white">
+              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-400 to-blue-400 flex items-center justify-center text-2xl text-white shadow-lg border-4 border-white/20">
                 👤
               </div>
             )}
             
-            <div className="flex-1 space-y-2">
-              <h4 className="text-xl font-semibold text-white">{searchResult.profile.name}</h4>
+            <div className="flex-1 space-y-4">
+              <h4 className="text-2xl font-bold text-white">{searchResult.profile.name}</h4>
               {searchResult.profile.bio && (
-                <p className="text-white/70 leading-relaxed">{searchResult.profile.bio}</p>
+                <p className="text-white/80 leading-relaxed bg-black/20 rounded-lg p-3">{searchResult.profile.bio}</p>
               )}
               {searchResult.profile.email && (
-                <div className="flex items-center gap-2 text-white/60 text-sm">
-                  <span>📧</span>
-                  <span>{searchResult.profile.email}</span>
+                <div className="flex items-center gap-3 text-white/70">
+                  <span className="text-lg">📧</span>
+                  <span className="font-medium">{searchResult.profile.email}</span>
                 </div>
               )}
-              <div className="flex flex-col sm:flex-row gap-2 text-white/50 text-xs">
-                <span>Updated: {new Date(searchResult.profile.timestamp).toLocaleDateString()}</span>
-                <span className="hidden sm:inline">•</span>
-                <span>CID: {searchResult.cid}</span>
+              <div className="flex flex-col sm:flex-row gap-4 text-white/50 text-sm">
+                <div className="flex items-center gap-2">
+                  <span>🕒</span>
+                  <span>Updated: {new Date(searchResult.profile.timestamp).toLocaleDateString()}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span>🔗</span>
+                  <span>CID: {searchResult.cid}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -125,9 +149,11 @@ export const DIDLookup = () => {
       )}
 
       {!searchResult && !error && !isSearching && (
-        <div className="text-center py-8">
-          <div className="text-4xl mb-4">🌐</div>
-          <p className="text-white/60">
+        <div className="text-center py-12">
+          <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center text-3xl border border-blue-400/20">
+            🌐
+          </div>
+          <p className="text-white/60 text-lg">
             Enter a DID above to lookup someone's profile
           </p>
         </div>

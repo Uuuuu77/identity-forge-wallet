@@ -9,19 +9,24 @@ export const DIDDashboard = () => {
 
   if (!did) {
     return (
-      <div className="glass rounded-2xl p-8 text-center animate-fade-in">
-        <div className="mb-6">
-          <div className="text-6xl mb-4">🔐</div>
-          <h2 className="text-2xl font-bold text-white mb-4">Welcome to DID Wallet</h2>
-          <p className="text-white/80 mb-6 max-w-md mx-auto">
+      <div className="glass rounded-3xl p-12 text-center animate-fade-in shadow-2xl border border-white/20">
+        <div className="mb-8">
+          <div className="w-20 h-20 mx-auto mb-6 rounded-3xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-4xl shadow-lg">
+            🔐
+          </div>
+          <h2 className="text-3xl font-bold text-white mb-6 bg-gradient-to-r from-purple-200 to-pink-200 bg-clip-text text-transparent">
+            Welcome to DID Wallet
+          </h2>
+          <p className="text-white/80 mb-8 max-w-lg mx-auto leading-relaxed text-lg">
             Create your decentralized identity to get started. Your DID will be cryptographically secured and completely under your control.
           </p>
         </div>
         
         <button
           onClick={generateDID}
-          className="btn-primary text-white font-semibold py-3 px-8 rounded-xl text-lg"
+          className="btn-primary text-white font-bold py-4 px-10 rounded-2xl text-xl hover:scale-105 transition-all duration-200 shadow-2xl flex items-center gap-3 mx-auto"
         >
+          <span>✨</span>
           Generate My DID
         </button>
       </div>
@@ -29,54 +34,71 @@ export const DIDDashboard = () => {
   }
 
   return (
-    <div className="glass rounded-2xl p-8 animate-fade-in">
-      <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-        <span className="text-3xl">🆔</span>
+    <div className="glass rounded-3xl p-8 animate-fade-in shadow-2xl border border-white/20">
+      <h2 className="text-3xl font-bold text-white mb-8 flex items-center gap-4">
+        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-green-500 to-blue-500 flex items-center justify-center text-2xl">
+          🆔
+        </div>
         Your Decentralized Identity
       </h2>
       
-      <div className="bg-white/10 rounded-xl p-6 mb-6">
-        <div className="grid md:grid-cols-2 gap-6 items-center">
+      <div className="bg-gradient-to-br from-white/10 to-white/5 rounded-2xl p-8 mb-8 border border-white/10 backdrop-blur-sm">
+        <div className="grid md:grid-cols-2 gap-8 items-center">
           <div className="flex justify-center">
-            <QRCodeDisplay text={did} size={200} />
+            <div className="p-4 bg-white rounded-2xl shadow-xl">
+              <QRCodeDisplay text={did} size={200} />
+            </div>
           </div>
           
-          <div className="space-y-4">
+          <div className="space-y-6">
             <div>
-              <p className="text-white/60 text-sm mb-2 font-medium uppercase tracking-wide">
+              <p className="text-white/70 text-sm mb-3 font-semibold uppercase tracking-wider flex items-center gap-2">
+                <span>🔑</span>
                 Your DID
               </p>
-              <div className="bg-black/20 rounded-lg p-4 break-all text-sm font-mono text-white border border-white/10">
+              <div className="bg-black/30 rounded-xl p-4 break-all text-sm font-mono text-white border border-white/10 backdrop-blur-sm">
                 <span className="hidden sm:inline">{did}</span>
                 <span className="sm:hidden">{formatDID(did)}</span>
               </div>
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex flex-col sm:flex-row gap-4">
               <CopyButton text={did} className="flex-1" />
               <button
                 onClick={generateDID}
-                className="btn-secondary text-white font-medium py-2 px-4 rounded-lg text-sm"
+                className="btn-secondary text-white font-semibold py-3 px-6 rounded-xl text-sm hover:scale-105 transition-all duration-200 flex items-center justify-center gap-2"
               >
-                🔄 Regenerate
+                <span>🔄</span>
+                Regenerate
               </button>
             </div>
           </div>
         </div>
       </div>
       
-      <div className="grid sm:grid-cols-3 gap-4 text-center">
-        <div className="bg-white/5 rounded-lg p-4">
-          <div className="text-2xl mb-2">🔒</div>
-          <p className="text-white/80 text-sm font-medium">Cryptographically Secured</p>
+      <div className="grid sm:grid-cols-3 gap-6">
+        <div className="bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-2xl p-6 text-center border border-green-400/20 backdrop-blur-sm hover:scale-105 transition-all duration-200">
+          <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-green-500/30 flex items-center justify-center text-2xl">
+            🔒
+          </div>
+          <p className="text-white font-semibold">Cryptographically Secured</p>
+          <p className="text-white/60 text-sm mt-2">Protected by advanced encryption</p>
         </div>
-        <div className="bg-white/5 rounded-lg p-4">
-          <div className="text-2xl mb-2">🌐</div>
-          <p className="text-white/80 text-sm font-medium">Globally Resolvable</p>
+        
+        <div className="bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-2xl p-6 text-center border border-blue-400/20 backdrop-blur-sm hover:scale-105 transition-all duration-200">
+          <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-blue-500/30 flex items-center justify-center text-2xl">
+            🌐
+          </div>
+          <p className="text-white font-semibold">Globally Resolvable</p>
+          <p className="text-white/60 text-sm mt-2">Accessible worldwide instantly</p>
         </div>
-        <div className="bg-white/5 rounded-lg p-4">
-          <div className="text-2xl mb-2">👤</div>
-          <p className="text-white/80 text-sm font-medium">Self-Sovereign</p>
+        
+        <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-2xl p-6 text-center border border-purple-400/20 backdrop-blur-sm hover:scale-105 transition-all duration-200">
+          <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-purple-500/30 flex items-center justify-center text-2xl">
+            👤
+          </div>
+          <p className="text-white font-semibold">Self-Sovereign</p>
+          <p className="text-white/60 text-sm mt-2">You own and control your identity</p>
         </div>
       </div>
     </div>

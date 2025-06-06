@@ -23,17 +23,21 @@ export const APIKeyManager = ({ onKeyChange }: APIKeyManagerProps) => {
   }, [onKeyChange]);
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4 p-6 rounded-xl bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-white/10 backdrop-blur-sm">
       <div className="flex items-center justify-between">
-        <Label htmlFor="gemini-key" className="text-white/80 text-sm font-medium">
-          Gemini API Key (Provided)
+        <Label htmlFor="gemini-key" className="text-white/90 text-sm font-semibold flex items-center gap-2">
+          <span className="text-lg">🤖</span>
+          AI Configuration
         </Label>
-        <div className="flex items-center gap-2">
-          <span className="text-green-400 text-xs">✓ Ready to use</span>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/20 border border-green-400/30">
+            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+            <span className="text-green-300 text-xs font-medium">Ready</span>
+          </div>
           <button
             type="button"
             onClick={() => setShowKey(!showKey)}
-            className="text-white/60 hover:text-white/80 text-xs"
+            className="text-white/70 hover:text-white transition-colors text-xs bg-white/10 hover:bg-white/20 px-3 py-1 rounded-lg"
           >
             {showKey ? '🙈 Hide' : '👁️ Show'}
           </button>
@@ -45,12 +49,15 @@ export const APIKeyManager = ({ onKeyChange }: APIKeyManagerProps) => {
         type={showKey ? 'text' : 'password'}
         value={apiKey}
         readOnly
-        className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:border-purple-400 cursor-not-allowed"
+        className="bg-black/20 border-white/20 text-white/90 placeholder-white/50 focus:border-purple-400 cursor-not-allowed font-mono text-sm"
       />
       
-      <p className="text-white/50 text-xs">
-        API key is provided and ready for AI avatar generation. No setup required!
-      </p>
+      <div className="flex items-start gap-3 p-3 rounded-lg bg-blue-500/10 border border-blue-400/20">
+        <span className="text-blue-300 text-lg">ℹ️</span>
+        <p className="text-blue-200 text-xs leading-relaxed">
+          Gemini AI is pre-configured and ready for avatar generation. No additional setup required!
+        </p>
+      </div>
     </div>
   );
 };
