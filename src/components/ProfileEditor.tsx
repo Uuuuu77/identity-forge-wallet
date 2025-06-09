@@ -25,7 +25,7 @@ export const ProfileEditor = () => {
         name: profile.name || '',
         bio: profile.bio || '',
         email: profile.email || '',
-        avatarUrl: profile.avatarUrl || ''
+        avatarUrl: profile.avatarUrl || profile.avatar || ''
       });
     }
   }, [profile]);
@@ -95,10 +95,10 @@ export const ProfileEditor = () => {
         
         <div className="bg-gradient-to-br from-white/10 to-white/5 rounded-2xl p-8 border border-white/10 backdrop-blur-sm">
           <div className="flex items-center space-x-8">
-            {profile.avatarUrl ? (
+            {(profile.avatarUrl || profile.avatar) ? (
               <div className="relative">
                 <img 
-                  src={profile.avatarUrl} 
+                  src={profile.avatarUrl || profile.avatar} 
                   alt="Avatar" 
                   className="w-24 h-24 rounded-2xl object-cover border-4 border-white/20 shadow-lg"
                   onError={(e) => { 
@@ -126,7 +126,7 @@ export const ProfileEditor = () => {
               )}
               <div className="flex items-center gap-3 text-foreground/50 text-sm">
                 <span>🕒</span>
-                <span>Last updated: {new Date(profile.timestamp).toLocaleDateString()}</span>
+                <span>Last updated: {new Date(profile.timestamp || Date.now()).toLocaleDateString()}</span>
               </div>
             </div>
           </div>

@@ -1,12 +1,11 @@
 
 import { useState } from 'react';
 import { useDID } from '@/contexts/DIDContext';
-import { Profile } from '@/contexts/DIDContext';
 
 export const DIDLookup = () => {
   const { loadProfile } = useDID();
   const [searchDid, setSearchDid] = useState('');
-  const [searchResult, setSearchResult] = useState<{ profile: Profile; verified: boolean; cid: string } | null>(null);
+  const [searchResult, setSearchResult] = useState<{ profile: any; verified: boolean; cid: string } | null>(null);
   const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState('');
 
@@ -136,7 +135,7 @@ export const DIDLookup = () => {
               <div className="flex flex-col sm:flex-row gap-4 text-foreground/50 text-sm">
                 <div className="flex items-center gap-2">
                   <span>🕒</span>
-                  <span>Updated: {new Date(searchResult.profile.timestamp).toLocaleDateString()}</span>
+                  <span>Updated: {new Date(searchResult.profile.timestamp || Date.now()).toLocaleDateString()}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span>🔗</span>

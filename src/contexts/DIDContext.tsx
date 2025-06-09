@@ -2,8 +2,8 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { generateKeypair, createDIDFromPublicKey } from '@/lib/did-utils';
-import storage from '@/lib/storage';
+import { generateKeypair, createDIDFromPublicKey } from '../lib/did-utils';
+import storage from '../lib/storage';
 
 export interface DIDProfile {
   name: string;
@@ -12,15 +12,21 @@ export interface DIDProfile {
   website: string;
   twitter: string;
   github: string;
+  email?: string;
+  avatarUrl?: string;
+  timestamp?: number;
 }
 
 interface DIDContextType {
   did: string | null;
   privateKey: Uint8Array | null;
   publicKey: Uint8Array | null;
-  profile: DIDProfile;
+  profile: DIDProfile | null;
+  isLoading: boolean;
   generateDID: () => void;
   updateProfile: (profile: Partial<DIDProfile>) => void;
+  saveProfile: (profile: Partial<DIDProfile>) => Promise<void>;
+  loadProfile: (did: string) => Promise<{ profile: DIDProfile; verified: boolean; cid: string } | null>;
   exportDID: () => string;
   importDID: (didData: string) => boolean;
 }
@@ -39,14 +45,8 @@ export const DIDProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [did, setDID] = useState<string | null>(null);
   const [privateKey, setPrivateKey] = useState<Uint8Array | null>(null);
   const [publicKey, setPublicKey] = useState<Uint8Array | null>(null);
-  const [profile, setProfile] = useState<DIDProfile>({
-    name: '',
-    bio: '',
-    avatar: '',
-    website: '',
-    twitter: '',
-    github: '',
-  });
+  const [profile, setProfile] = useState<DIDProfile | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     // Load existing DID and profile from storage
@@ -81,9 +81,49 @@ export const DIDProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const updateProfile = (newProfile: Partial<DIDProfile>) => {
-    const updatedProfile = { ...profile, ...newProfile };
+    const updatedProfile = { 
+      ...profile, 
+      ...newProfile,
+      timestamp: Date.now()
+    };
     setProfile(updatedProfile);
     storage.set('profile', updatedProfile);
+  };
+
+  const saveProfile = async (newProfile: Partial<DIDProfile>) => {
+    setIsLoading(true);
+    try {
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+      updateProfile(newProfile);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const loadProfile = async (searchDid: string): Promise<{ profile: DIDProfile; verified: boolean; cid: string } | null> => {
+    // Mock implementation - in real app, this would fetch from IPFS/network
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
+    // Return mock data for demo
+    if (searchDid.startsWith('did:key:z')) {
+      return {
+        profile: {
+          name: 'Mock User',
+          bio: 'This is a mock profile for demonstration',
+          avatar: '',
+          website: '',
+          twitter: '',
+          github: '',
+          email: 'mock@example.com',
+          timestamp: Date.now() - 86400000 // 1 day ago
+        },
+        verified: true,
+        cid: 'QmMockCID123...'
+      };
+    }
+    
+    return null;
   };
 
   const exportDID = () => {
@@ -140,8 +180,11 @@ export const DIDProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       privateKey,
       publicKey,
       profile,
+      isLoading,
       generateDID,
       updateProfile,
+      saveProfile,
+      loadProfile,
       exportDID,
       importDID,
     }}>

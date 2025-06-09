@@ -2,62 +2,85 @@
 import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import storage from '@/lib/storage';
+import { Button } from '@/components/ui/button';
+import storage from '../lib/storage';
 
 interface APIKeyManagerProps {
-  onKeyChange?: (key: string) => void;
+  onKeyChange: (key: string) => void;
 }
 
-// Hardcoded Gemini API key for users to use
-const HARDCODED_GEMINI_KEY = 'YOUR_GEMINI_API_KEY_HERE';
-
 export const APIKeyManager = ({ onKeyChange }: APIKeyManagerProps) => {
-  const [apiKey] = useState(HARDCODED_GEMINI_KEY);
+  const [apiKey, setApiKey] = useState('');
   const [showKey, setShowKey] = useState(false);
 
   useEffect(() => {
-    // Use the hardcoded key and notify parent component
-    onKeyChange?.(HARDCODED_GEMINI_KEY);
-    // Also store it locally for consistency
-    storage.set('gemini-api-key', HARDCODED_GEMINI_KEY);
+    const storedKey = storage.get('gemini_api_key');
+    if (storedKey) {
+      setApiKey(storedKey);
+      onKeyChange(storedKey);
+    }
   }, [onKeyChange]);
 
+  const handleSaveKey = () => {
+    storage.set('gemini_api_key', apiKey);
+    onKeyChange(apiKey);
+  };
+
+  const handleClearKey = () => {
+    setApiKey('');
+    storage.remove('gemini_api_key');
+    onKeyChange('');
+  };
+
   return (
-    <div className="space-y-4 p-6 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 border border-white/10 backdrop-blur-sm">
+    <div className="space-y-4 p-6 bg-gradient-to-br from-white/5 to-white/10 rounded-2xl border border-white/10 backdrop-blur-sm">
       <div className="flex items-center justify-between">
-        <Label htmlFor="gemini-key" className="text-foreground/90 text-sm font-semibold flex items-center gap-2">
-          <span className="text-lg">🤖</span>
-          AI Configuration
+        <Label htmlFor="gemini-key" className="text-foreground/90 font-semibold flex items-center gap-2">
+          <span>🔑</span> Gemini API Key
         </Label>
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/20 border border-green-400/30">
-            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-            <span className="text-green-300 text-xs font-medium">Ready</span>
-          </div>
-          <button
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          onClick={() => setShowKey(!showKey)}
+          className="text-foreground/60 hover:text-foreground/80"
+        >
+          {showKey ? '👁️' : '👁️‍🗨️'}
+        </Button>
+      </div>
+      
+      <div className="flex gap-2">
+        <Input
+          id="gemini-key"
+          type={showKey ? 'text' : 'password'}
+          value={apiKey}
+          onChange={(e) => setApiKey(e.target.value)}
+          className="bg-white/10 border-white/20 text-foreground placeholder-foreground/50 focus:border-primary focus:ring-2 focus:ring-primary/50 rounded-xl flex-1"
+          placeholder="Enter your Gemini API key for AI features"
+        />
+        <Button
+          type="button"
+          onClick={handleSaveKey}
+          disabled={!apiKey.trim()}
+          className="bg-primary/20 hover:bg-primary/30 text-primary border border-primary/30 rounded-xl px-4"
+        >
+          Save
+        </Button>
+        {apiKey && (
+          <Button
             type="button"
-            onClick={() => setShowKey(!showKey)}
-            className="text-foreground/70 hover:text-foreground transition-colors text-xs bg-white/10 hover:bg-white/20 px-3 py-1 rounded-lg"
+            onClick={handleClearKey}
+            variant="ghost"
+            className="text-red-400 hover:text-red-300 hover:bg-red-400/10 rounded-xl px-4"
           >
-            {showKey ? '🙈 Hide' : '👁️ Show'}
-          </button>
-        </div>
+            Clear
+          </Button>
+        )}
       </div>
       
-      <Input
-        id="gemini-key"
-        type={showKey ? 'text' : 'password'}
-        value={apiKey}
-        readOnly
-        className="bg-black/20 border-white/20 text-foreground/90 placeholder-white/50 focus:border-primary cursor-not-allowed font-mono text-sm"
-      />
-      
-      <div className="flex items-start gap-3 p-3 rounded-lg bg-blue-500/10 border border-blue-400/20">
-        <span className="text-blue-300 text-lg">ℹ️</span>
-        <p className="text-blue-200 text-xs leading-relaxed">
-          Gemini AI is pre-configured and ready for avatar generation. No additional setup required!
-        </p>
-      </div>
+      <p className="text-foreground/60 text-sm">
+        Your API key is stored locally and used only for generating AI avatars.
+      </p>
     </div>
   );
 };
