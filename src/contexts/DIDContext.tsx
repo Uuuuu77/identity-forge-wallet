@@ -1,8 +1,9 @@
+
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { generateKeypair, createDIDFromPublicKey } from '../lib/did-utils';
-import storage from '../lib/storage';
+import { generateKeypair, createDIDFromPublicKey } from '@/lib/did-utils';
+import storage from '@/lib/storage';
 
 export interface DIDProfile {
   name: string;

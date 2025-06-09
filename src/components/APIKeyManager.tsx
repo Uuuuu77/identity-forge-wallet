@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import storage from '../lib/storage';
+import storage from '@/lib/storage';
 
 interface APIKeyManagerProps {
   onKeyChange: (key: string) => void;
