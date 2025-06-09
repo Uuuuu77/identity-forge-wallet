@@ -36,8 +36,8 @@ export const DIDLookup = () => {
   };
 
   return (
-    <div className="glass rounded-3xl p-8 animate-fade-in shadow-2xl border border-white/20">
-      <h2 className="text-3xl font-bold text-white mb-8 flex items-center gap-4">
+    <div className="glass-card rounded-3xl p-8 animate-fade-in shadow-2xl border border-white/20">
+      <h2 className="text-3xl font-bold text-foreground mb-8 flex items-center gap-4">
         <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-2xl">
           🔍
         </div>
@@ -51,10 +51,10 @@ export const DIDLookup = () => {
               type="text"
               value={searchDid}
               onChange={(e) => setSearchDid(e.target.value)}
-              className="w-full bg-white/10 border border-white/20 rounded-xl px-6 py-4 text-white placeholder-white/50 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/50 transition-all backdrop-blur-sm"
+              className="w-full bg-white/10 border border-white/20 rounded-xl px-6 py-4 text-foreground placeholder-foreground/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all backdrop-blur-sm"
               placeholder="Enter DID (e.g., did:key:z6Mk...)"
             />
-            <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white/30">
+            <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-foreground/30">
               🔗
             </div>
           </div>
@@ -92,7 +92,7 @@ export const DIDLookup = () => {
       {searchResult && (
         <div className="bg-gradient-to-br from-white/10 to-white/5 rounded-2xl p-8 animate-fade-in border border-white/10 backdrop-blur-sm">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-white flex items-center gap-3">
+            <h3 className="text-xl font-bold text-foreground flex items-center gap-3">
               <span>👤</span>
               Profile Found
             </h3>
@@ -117,23 +117,23 @@ export const DIDLookup = () => {
                 <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 border-2 border-white rounded-full"></div>
               </div>
             ) : (
-              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-400 to-blue-400 flex items-center justify-center text-2xl text-white shadow-lg border-4 border-white/20">
+              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-2xl text-white shadow-lg border-4 border-white/20">
                 👤
               </div>
             )}
             
             <div className="flex-1 space-y-4">
-              <h4 className="text-2xl font-bold text-white">{searchResult.profile.name}</h4>
+              <h4 className="text-2xl font-bold text-foreground">{searchResult.profile.name}</h4>
               {searchResult.profile.bio && (
-                <p className="text-white/80 leading-relaxed bg-black/20 rounded-lg p-3">{searchResult.profile.bio}</p>
+                <p className="text-foreground/80 leading-relaxed bg-black/20 rounded-lg p-3">{searchResult.profile.bio}</p>
               )}
               {searchResult.profile.email && (
-                <div className="flex items-center gap-3 text-white/70">
+                <div className="flex items-center gap-3 text-foreground/70">
                   <span className="text-lg">📧</span>
                   <span className="font-medium">{searchResult.profile.email}</span>
                 </div>
               )}
-              <div className="flex flex-col sm:flex-row gap-4 text-white/50 text-sm">
+              <div className="flex flex-col sm:flex-row gap-4 text-foreground/50 text-sm">
                 <div className="flex items-center gap-2">
                   <span>🕒</span>
                   <span>Updated: {new Date(searchResult.profile.timestamp).toLocaleDateString()}</span>
@@ -153,7 +153,7 @@ export const DIDLookup = () => {
           <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center text-3xl border border-blue-400/20">
             🌐
           </div>
-          <p className="text-white/60 text-lg">
+          <p className="text-foreground/60 text-lg">
             Enter a DID above to lookup someone's profile
           </p>
         </div>

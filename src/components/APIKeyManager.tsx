@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { storage } from '@/utils/storage';
+import storage from '@/lib/storage';
 
 interface APIKeyManagerProps {
   onKeyChange?: (key: string) => void;
@@ -23,9 +23,9 @@ export const APIKeyManager = ({ onKeyChange }: APIKeyManagerProps) => {
   }, [onKeyChange]);
 
   return (
-    <div className="space-y-4 p-6 rounded-xl bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-white/10 backdrop-blur-sm">
+    <div className="space-y-4 p-6 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 border border-white/10 backdrop-blur-sm">
       <div className="flex items-center justify-between">
-        <Label htmlFor="gemini-key" className="text-white/90 text-sm font-semibold flex items-center gap-2">
+        <Label htmlFor="gemini-key" className="text-foreground/90 text-sm font-semibold flex items-center gap-2">
           <span className="text-lg">🤖</span>
           AI Configuration
         </Label>
@@ -37,7 +37,7 @@ export const APIKeyManager = ({ onKeyChange }: APIKeyManagerProps) => {
           <button
             type="button"
             onClick={() => setShowKey(!showKey)}
-            className="text-white/70 hover:text-white transition-colors text-xs bg-white/10 hover:bg-white/20 px-3 py-1 rounded-lg"
+            className="text-foreground/70 hover:text-foreground transition-colors text-xs bg-white/10 hover:bg-white/20 px-3 py-1 rounded-lg"
           >
             {showKey ? '🙈 Hide' : '👁️ Show'}
           </button>
@@ -49,7 +49,7 @@ export const APIKeyManager = ({ onKeyChange }: APIKeyManagerProps) => {
         type={showKey ? 'text' : 'password'}
         value={apiKey}
         readOnly
-        className="bg-black/20 border-white/20 text-white/90 placeholder-white/50 focus:border-purple-400 cursor-not-allowed font-mono text-sm"
+        className="bg-black/20 border-white/20 text-foreground/90 placeholder-white/50 focus:border-primary cursor-not-allowed font-mono text-sm"
       />
       
       <div className="flex items-start gap-3 p-3 rounded-lg bg-blue-500/10 border border-blue-400/20">
