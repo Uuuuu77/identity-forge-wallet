@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useDID } from '@/contexts/DIDContext';
 
 export const DIDLookup = () => {
-  const { loadProfile } = useDID();
+  const { loadProfile, did: currentDID } = useDID();
   const [searchDid, setSearchDid] = useState('');
   const [searchResult, setSearchResult] = useState<{ profile: any; verified: boolean; cid: string } | null>(null);
   const [isSearching, setIsSearching] = useState(false);
@@ -11,27 +11,45 @@ export const DIDLookup = () => {
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!searchDid.trim()) return;
+    if (!searchDid.trim()) {
+      setError('Please enter a DID to search for.');
+      return;
+    }
+
+    // Basic DID format validation
+    if (!searchDid.startsWith('did:key:z')) {
+      setError('Invalid DID format. DID should start with "did:key:z"');
+      return;
+    }
 
     setIsSearching(true);
     setError('');
     setSearchResult(null);
 
     try {
-      // Simulate search delay
-      await new Promise(resolve => setTimeout(resolve, 800));
+      console.log('Searching for DID:', searchDid.trim());
+      console.log('Current DID:', currentDID);
       
       const result = await loadProfile(searchDid.trim());
+      console.log('Search result:', result);
+      
       if (result) {
         setSearchResult(result);
       } else {
-        setError('Profile not found for this DID. The user may not have created a profile yet.');
+        setError('Profile not found for this DID. The user may not have created a profile yet, or the DID may not exist.');
       }
     } catch (err) {
+      console.error('Search error:', err);
       setError('Failed to lookup DID. Please check the DID format and try again.');
     } finally {
       setIsSearching(false);
     }
+  };
+
+  const clearSearch = () => {
+    setSearchDid('');
+    setSearchResult(null);
+    setError('');
   };
 
   return (
@@ -57,23 +75,34 @@ export const DIDLookup = () => {
               🔗
             </div>
           </div>
-          <button
-            type="submit"
-            disabled={isSearching || !searchDid.trim()}
-            className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 disabled:opacity-50 text-white font-bold py-4 px-8 rounded-xl transition-all duration-200 flex items-center justify-center gap-3 min-w-[140px] hover:scale-105 shadow-lg"
-          >
-            {isSearching ? (
-              <>
-                <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
-                Searching...
-              </>
-            ) : (
-              <>
-                <span>🔍</span>
-                Search
-              </>
+          <div className="flex gap-2">
+            <button
+              type="submit"
+              disabled={isSearching || !searchDid.trim()}
+              className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 disabled:opacity-50 text-white font-bold py-4 px-8 rounded-xl transition-all duration-200 flex items-center justify-center gap-3 min-w-[140px] hover:scale-105 shadow-lg"
+            >
+              {isSearching ? (
+                <>
+                  <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
+                  Searching...
+                </>
+              ) : (
+                <>
+                  <span>🔍</span>
+                  Search
+                </>
+              )}
+            </button>
+            {(searchResult || error) && (
+              <button
+                type="button"
+                onClick={clearSearch}
+                className="bg-white/20 hover:bg-white/30 text-foreground font-semibold py-4 px-4 rounded-xl hover:scale-105 transition-all duration-200 flex items-center justify-center"
+              >
+                <span>🗑️</span>
+              </button>
             )}
-          </button>
+          </div>
         </div>
       </form>
 
@@ -94,6 +123,11 @@ export const DIDLookup = () => {
             <h3 className="text-xl font-bold text-foreground flex items-center gap-3">
               <span>👤</span>
               Profile Found
+              {searchDid === currentDID && (
+                <span className="text-sm bg-primary/20 text-primary-foreground px-2 py-1 rounded-full">
+                  Your Profile
+                </span>
+              )}
             </h3>
             <div className="px-4 py-2 rounded-full text-sm font-semibold bg-green-500/20 text-green-200 flex items-center gap-2 border border-green-400/30">
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
@@ -152,9 +186,15 @@ export const DIDLookup = () => {
           <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center text-3xl border border-blue-400/20">
             🌐
           </div>
-          <p className="text-foreground/60 text-lg">
+          <p className="text-foreground/60 text-lg mb-4">
             Enter a DID above to lookup someone's profile
           </p>
+          {currentDID && (
+            <div className="bg-gradient-to-r from-primary/10 to-accent/10 rounded-xl p-4 border border-primary/20">
+              <p className="text-foreground/70 text-sm mb-2">💡 Try searching for your own DID:</p>
+              <p className="text-foreground/60 text-xs font-mono break-all">{currentDID}</p>
+            </div>
+          )}
         </div>
       )}
     </div>

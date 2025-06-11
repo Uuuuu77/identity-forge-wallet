@@ -8,7 +8,7 @@ import { APIKeyManager } from './APIKeyManager';
 import { useToast } from '@/hooks/use-toast';
 
 export const ProfileEditor = () => {
-  const { profile, saveProfile, isLoading } = useDID();
+  const { did, profile, saveProfile, isLoading } = useDID();
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: '',
@@ -30,8 +30,43 @@ export const ProfileEditor = () => {
     }
   }, [profile]);
 
+  // If no DID is generated, show message to generate DID first
+  if (!did) {
+    return (
+      <div className="glass-card rounded-3xl p-12 text-center animate-fade-in shadow-2xl border border-white/20">
+        <div className="mb-8">
+          <div className="w-20 h-20 mx-auto mb-6 rounded-3xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center text-4xl shadow-lg">
+            ⚠️
+          </div>
+          <h2 className="text-3xl font-bold text-foreground mb-6">
+            DID Required
+          </h2>
+          <p className="text-foreground/80 mb-8 max-w-lg mx-auto leading-relaxed text-lg">
+            You need to generate a DID first before creating your profile. Please go to the Dashboard tab and generate your DID.
+          </p>
+        </div>
+        
+        <div className="bg-gradient-to-r from-primary/20 to-accent/20 rounded-2xl p-6 border border-primary/20 backdrop-blur-sm">
+          <p className="text-foreground/70 text-sm">
+            💡 Your DID (Decentralized Identifier) is required to create and manage your profile securely.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!formData.name.trim()) {
+      toast({
+        title: "Name Required",
+        description: "Please enter your name to create a profile.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       await saveProfile(formData);
       setIsEditing(false);

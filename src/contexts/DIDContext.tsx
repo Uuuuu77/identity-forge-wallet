@@ -78,6 +78,10 @@ export const DIDProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     storage.set('did', newDID);
     storage.set('privateKey', Array.from(keypair.privateKey));
     storage.set('publicKey', Array.from(keypair.publicKey));
+    
+    // Clear any existing profile when generating new DID
+    setProfile(null);
+    storage.remove('profile');
   };
 
   const updateProfile = (newProfile: Partial<DIDProfile>) => {
@@ -102,24 +106,25 @@ export const DIDProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const loadProfile = async (searchDid: string): Promise<{ profile: DIDProfile; verified: boolean; cid: string } | null> => {
-    // Mock implementation - in real app, this would fetch from IPFS/network
     await new Promise(resolve => setTimeout(resolve, 800));
     
-    // Return mock data for demo
-    if (searchDid.startsWith('did:key:z')) {
+    // Check if it's the current user's DID
+    if (searchDid === did && profile) {
       return {
-        profile: {
-          name: 'Mock User',
-          bio: 'This is a mock profile for demonstration',
-          avatar: '',
-          website: '',
-          twitter: '',
-          github: '',
-          email: 'mock@example.com',
-          timestamp: Date.now() - 86400000 // 1 day ago
-        },
+        profile: profile,
         verified: true,
-        cid: 'QmMockCID123...'
+        cid: `QmProfile${searchDid.slice(-8)}...`
+      };
+    }
+    
+    // Try to load from localStorage with different possible keys
+    const profileData = storage.get(`profile-${searchDid}`) || storage.get('profile');
+    
+    if (profileData) {
+      return {
+        profile: profileData,
+        verified: true,
+        cid: `QmProfile${searchDid.slice(-8)}...`
       };
     }
     
