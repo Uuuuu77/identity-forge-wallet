@@ -18,10 +18,10 @@ export const DIDDashboard = () => {
           <div className="w-20 h-20 mx-auto mb-6 rounded-3xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-4xl shadow-lg">
             🔐
           </div>
-          <h2 className="text-3xl font-bold text-foreground mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+          <h2 className="text-3xl font-bold text-white mb-6">
             Welcome to DID Wallet
           </h2>
-          <p className="text-foreground/80 mb-8 max-w-lg mx-auto leading-relaxed text-lg">
+          <p className="text-white/80 mb-8 max-w-lg mx-auto leading-relaxed text-lg">
             Create your decentralized identity to get started. Your DID will be cryptographically secured and completely under your control.
           </p>
         </div>
@@ -39,7 +39,7 @@ export const DIDDashboard = () => {
 
   return (
     <div className="glass-card rounded-3xl p-8 animate-fade-in shadow-2xl border border-white/20">
-      <h2 className="text-3xl font-bold text-foreground mb-8 flex items-center gap-4">
+      <h2 className="text-3xl font-bold text-white mb-8 flex items-center gap-4">
         <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-green-500 to-blue-500 flex items-center justify-center text-2xl">
           🆔
         </div>
@@ -56,11 +56,11 @@ export const DIDDashboard = () => {
           
           <div className="space-y-6">
             <div>
-              <p className="text-foreground/70 text-sm mb-3 font-semibold uppercase tracking-wider flex items-center gap-2">
+              <p className="text-white/70 text-sm mb-3 font-semibold uppercase tracking-wider flex items-center gap-2">
                 <span>🔑</span>
                 Your DID
               </p>
-              <div className="bg-black/30 rounded-xl p-4 break-all text-sm font-mono text-foreground border border-white/10 backdrop-blur-sm">
+              <div className="bg-black/30 rounded-xl p-4 break-all text-sm font-mono text-white border border-white/10 backdrop-blur-sm">
                 <span className="hidden sm:inline">{did}</span>
                 <span className="sm:hidden">{formatDID(did)}</span>
               </div>
@@ -70,7 +70,7 @@ export const DIDDashboard = () => {
               <CopyButton text={did} className="flex-1" />
               <button
                 onClick={generateDID}
-                className="bg-white/20 hover:bg-white/30 text-foreground font-semibold py-3 px-6 rounded-xl text-sm hover:scale-105 transition-all duration-200 flex items-center justify-center gap-2"
+                className="bg-white/20 hover:bg-white/30 text-white font-semibold py-3 px-6 rounded-xl text-sm hover:scale-105 transition-all duration-200 flex items-center justify-center gap-2"
               >
                 <span>🔄</span>
                 Regenerate
@@ -85,24 +85,24 @@ export const DIDDashboard = () => {
           <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-green-500/30 flex items-center justify-center text-2xl">
             🔒
           </div>
-          <p className="text-foreground font-semibold">Cryptographically Secured</p>
-          <p className="text-foreground/60 text-sm mt-2">Protected by advanced encryption</p>
+          <p className="text-white font-semibold">Cryptographically Secured</p>
+          <p className="text-white/60 text-sm mt-2">Protected by advanced encryption</p>
         </div>
         
         <div className="bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-2xl p-6 text-center border border-blue-400/20 backdrop-blur-sm hover:scale-105 transition-all duration-200">
           <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-blue-500/30 flex items-center justify-center text-2xl">
             🌐
           </div>
-          <p className="text-foreground font-semibold">Globally Resolvable</p>
-          <p className="text-foreground/60 text-sm mt-2">Accessible worldwide instantly</p>
+          <p className="text-white font-semibold">Globally Resolvable</p>
+          <p className="text-white/60 text-sm mt-2">Accessible worldwide instantly</p>
         </div>
         
         <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl p-6 text-center border border-primary/20 backdrop-blur-sm hover:scale-105 transition-all duration-200">
           <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-primary/30 flex items-center justify-center text-2xl">
             👤
           </div>
-          <p className="text-foreground font-semibold">Self-Sovereign</p>
-          <p className="text-foreground/60 text-sm mt-2">You own and control your identity</p>
+          <p className="text-white font-semibold">Self-Sovereign</p>
+          <p className="text-white/60 text-sm mt-2">You own and control your identity</p>
         </div>
       </div>
     </div>
