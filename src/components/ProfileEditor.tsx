@@ -5,6 +5,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { APIKeyManager } from './APIKeyManager';
 import { useToast } from '@/hooks/use-toast';
+import { generateAIAvatar, getGeminiApiKey } from '@/lib/ai-utils';
 
 export const ProfileEditor = () => {
   const { did, profile, agents, saveProfile, isLoading } = useDID();
@@ -16,7 +17,7 @@ export const ProfileEditor = () => {
     avatarUrl: ''
   });
   const [isEditing, setIsEditing] = useState(false);
-  const [geminiKey, setGeminiKey] = useState('');
+  const [isGeneratingAvatar, setIsGeneratingAvatar] = useState(false);
 
   useEffect(() => {
     if (profile) {
@@ -82,11 +83,13 @@ export const ProfileEditor = () => {
     }
   };
 
-  const generateAIAvatar = async () => {
-    if (!geminiKey) {
+  const generateAIAvatarHandler = async () => {
+    const apiKey = getGeminiApiKey();
+    
+    if (!apiKey) {
       toast({
         title: "API Key Required",
-        description: "Please enter your Gemini API key to generate an AI avatar.",
+        description: "Please enter and save your Gemini API key first.",
         variant: "destructive",
       });
       return;
@@ -101,10 +104,27 @@ export const ProfileEditor = () => {
       return;
     }
 
-    toast({
-      title: "AI Avatar Generation",
-      description: "AI avatar generation will be implemented with your API key.",
-    });
+    setIsGeneratingAvatar(true);
+    
+    try {
+      const prompt = `${formData.name}${formData.bio ? `, ${formData.bio}` : ''}`;
+      const avatarUrl = await generateAIAvatar(prompt);
+      
+      setFormData({...formData, avatarUrl});
+      
+      toast({
+        title: "Avatar Generated",
+        description: "Your AI avatar has been generated successfully!",
+      });
+    } catch (error) {
+      toast({
+        title: "Generation Failed",
+        description: error instanceof Error ? error.message : "Failed to generate avatar. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsGeneratingAvatar(false);
+    }
   };
 
   if (!isEditing && profile) {
@@ -289,11 +309,21 @@ export const ProfileEditor = () => {
             </Label>
             <button
               type="button"
-              onClick={generateAIAvatar}
-              className="text-sm bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold py-2 px-4 rounded-xl transition-all duration-200 flex items-center gap-2 hover:scale-105 shadow-lg"
+              onClick={generateAIAvatarHandler}
+              disabled={isGeneratingAvatar || !getGeminiApiKey()}
+              className="text-sm bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 disabled:opacity-50 text-white font-semibold py-2 px-4 rounded-xl transition-all duration-200 flex items-center gap-2 hover:scale-105 shadow-lg"
             >
-              <span>🎨</span>
-              Generate AI Avatar
+              {isGeneratingAvatar ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                  Generating...
+                </>
+              ) : (
+                <>
+                  <span>🎨</span>
+                  Generate AI Avatar
+                </>
+              )}
             </button>
           </div>
           <Input
@@ -306,7 +336,7 @@ export const ProfileEditor = () => {
           />
         </div>
 
-        <APIKeyManager onKeyChange={setGeminiKey} />
+        <APIKeyManager onKeyChange={() => {}} />
         
         <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-white/10">
           <button

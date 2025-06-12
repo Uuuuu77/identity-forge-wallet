@@ -1,10 +1,11 @@
-
 import { useState } from 'react';
 import { useDID } from '@/contexts/DIDContext';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { generateAgentCapabilities, getGeminiApiKey } from '@/lib/ai-utils';
 
 const CAPABILITY_OPTIONS = [
   { value: 'text', label: 'Text Processing', icon: '📝' },
@@ -19,8 +20,10 @@ export const AgentRegistry = () => {
   const { did, registerAgent } = useDID();
   const { toast } = useToast();
   const [agentName, setAgentName] = useState("");
+  const [agentDescription, setAgentDescription] = useState("");
   const [selectedCapabilities, setSelectedCapabilities] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGeneratingCapabilities, setIsGeneratingCapabilities] = useState(false);
 
   const toggleCapability = (capability: string) => {
     setSelectedCapabilities(prev => 
@@ -28,6 +31,48 @@ export const AgentRegistry = () => {
         ? prev.filter(c => c !== capability)
         : [...prev, capability]
     );
+  };
+
+  const generateCapabilities = async () => {
+    const apiKey = getGeminiApiKey();
+    
+    if (!apiKey) {
+      toast({
+        title: "API Key Required",
+        description: "Please set your Gemini API key in the Profile tab first.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!agentName.trim()) {
+      toast({
+        title: "Agent Name Required",
+        description: "Please enter an agent name first.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsGeneratingCapabilities(true);
+    
+    try {
+      const suggestions = await generateAgentCapabilities(agentName, agentDescription);
+      setSelectedCapabilities(suggestions);
+      
+      toast({
+        title: "Capabilities Suggested",
+        description: "AI has suggested relevant capabilities for your agent!",
+      });
+    } catch (error) {
+      toast({
+        title: "Generation Failed",
+        description: error instanceof Error ? error.message : "Failed to generate capabilities.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsGeneratingCapabilities(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -65,11 +110,13 @@ export const AgentRegistry = () => {
     try {
       registerAgent({
         name: agentName,
+        description: agentDescription,
         capabilities: selectedCapabilities
       });
       
       // Clear form
       setAgentName("");
+      setAgentDescription("");
       setSelectedCapabilities([]);
       
     } catch (error) {
@@ -107,11 +154,48 @@ export const AgentRegistry = () => {
             required
           />
         </div>
+
+        <div className="space-y-3">
+          <Label htmlFor="agentDescription" className="text-foreground/90 font-semibold flex items-center gap-2">
+            <span>📋</span> Description (Optional)
+          </Label>
+          <Textarea
+            id="agentDescription"
+            value={agentDescription}
+            onChange={(e) => setAgentDescription(e.target.value)}
+            className="bg-white/10 border-white/20 text-foreground placeholder-foreground/50 focus:border-primary focus:ring-2 focus:ring-primary/50 resize-none rounded-xl"
+            placeholder="Describe what your agent does..."
+            rows={3}
+          />
+        </div>
         
         <div className="space-y-4">
-          <Label className="text-foreground/90 font-semibold flex items-center gap-2">
-            <span>⚡</span> Capabilities *
-          </Label>
+          <div className="flex items-center justify-between">
+            <Label className="text-foreground/90 font-semibold flex items-center gap-2">
+              <span>⚡</span> Capabilities *
+            </Label>
+            <Button
+              type="button"
+              onClick={generateCapabilities}
+              disabled={isGeneratingCapabilities || !getGeminiApiKey()}
+              variant="ghost"
+              size="sm"
+              className="text-primary hover:text-primary/80"
+            >
+              {isGeneratingCapabilities ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent mr-2"></div>
+                  Generating...
+                </>
+              ) : (
+                <>
+                  <span className="mr-2">🎯</span>
+                  AI Suggest
+                </>
+              )}
+            </Button>
+          </div>
+          
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {CAPABILITY_OPTIONS.map((capability) => (
               <button
@@ -133,6 +217,7 @@ export const AgentRegistry = () => {
               </button>
             ))}
           </div>
+          
           {selectedCapabilities.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-4">
               {selectedCapabilities.map(cap => {
