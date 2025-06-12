@@ -13,8 +13,8 @@ export const generateAIAvatar = async (prompt: string): Promise<string> => {
   }
 
   try {
-    // Using Gemini's text generation to create a detailed avatar description
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+    // Using the correct Gemini API endpoint for text generation
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -24,15 +24,43 @@ export const generateAIAvatar = async (prompt: string): Promise<string> => {
           parts: [{
             text: `Create a detailed visual description for an avatar based on this prompt: "${prompt}". Focus on style, colors, facial features, and overall appearance. Keep it concise but vivid.`
           }]
-        }]
+        }],
+        generationConfig: {
+          temperature: 0.7,
+          topK: 1,
+          topP: 1,
+          maxOutputTokens: 2048,
+        },
+        safetySettings: [
+          {
+            category: "HARM_CATEGORY_HARASSMENT",
+            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+          },
+          {
+            category: "HARM_CATEGORY_HATE_SPEECH",
+            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+          },
+          {
+            category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+          },
+          {
+            category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+          }
+        ]
       })
     });
 
     if (!response.ok) {
-      throw new Error(`Gemini API error: ${response.status}`);
+      const errorData = await response.text();
+      console.error('Gemini API response:', errorData);
+      throw new Error(`Gemini API error: ${response.status} - ${errorData}`);
     }
 
     const data = await response.json();
+    console.log('Gemini API response:', data);
+    
     const description = data.candidates?.[0]?.content?.parts?.[0]?.text;
     
     if (!description) {
@@ -58,7 +86,7 @@ export const generateAgentCapabilities = async (agentName: string, description?:
   try {
     const prompt = `Based on this AI agent name "${agentName}"${description ? ` and description "${description}"` : ''}, suggest 3-5 appropriate capabilities from this list: text, image, data, voice, code, translate. Return only the capability names separated by commas.`;
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -68,15 +96,43 @@ export const generateAgentCapabilities = async (agentName: string, description?:
           parts: [{
             text: prompt
           }]
-        }]
+        }],
+        generationConfig: {
+          temperature: 0.7,
+          topK: 1,
+          topP: 1,
+          maxOutputTokens: 2048,
+        },
+        safetySettings: [
+          {
+            category: "HARM_CATEGORY_HARASSMENT",
+            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+          },
+          {
+            category: "HARM_CATEGORY_HATE_SPEECH",
+            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+          },
+          {
+            category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+          },
+          {
+            category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+          }
+        ]
       })
     });
 
     if (!response.ok) {
-      throw new Error(`Gemini API error: ${response.status}`);
+      const errorData = await response.text();
+      console.error('Gemini API response:', errorData);
+      throw new Error(`Gemini API error: ${response.status} - ${errorData}`);
     }
 
     const data = await response.json();
+    console.log('Gemini API response:', data);
+    
     const suggestions = data.candidates?.[0]?.content?.parts?.[0]?.text;
     
     if (!suggestions) {
