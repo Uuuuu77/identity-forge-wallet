@@ -1,4 +1,3 @@
-
 import React, {
   createContext,
   useState,
@@ -93,10 +92,9 @@ const DIDProvider = ({ children }: { children: React.ReactNode }) => {
       setProfile(storedProfile);
     }
 
-    // Load agents from storage
-    const allKeys = Object.keys(localStorage);
-    const agentKeys = allKeys.filter(key => key.startsWith('agent-'));
-    const storedAgents = agentKeys.map(key => storage.get(key)).filter(Boolean) as AgentProfile[];
+    // Load agents from storage using the new storage method
+    const agentEntries = storage.getByPrefix('agent-');
+    const storedAgents = agentEntries.map(entry => entry.value).filter(Boolean) as AgentProfile[];
     setAgents(storedAgents);
   }, []);
 
@@ -246,11 +244,8 @@ const DIDProvider = ({ children }: { children: React.ReactNode }) => {
   const getPendingHandshakes = useCallback(() => {
     if (!did) return [];
     
-    const allKeys = Object.keys(localStorage);
-    const handshakeKeys = allKeys.filter(key => key.startsWith('handshake-'));
-    const handshakes = handshakeKeys
-      .map(key => storage.get(key))
-      .filter(Boolean) as Handshake[];
+    const handshakeEntries = storage.getByPrefix('handshake-');
+    const handshakes = handshakeEntries.map(entry => entry.value).filter(Boolean) as Handshake[];
     
     return handshakes.filter(h => h.receiverDid === did && h.status === 'pending');
   }, [did]);
@@ -258,11 +253,8 @@ const DIDProvider = ({ children }: { children: React.ReactNode }) => {
   const getAcceptedHandshakes = useCallback(() => {
     if (!did) return [];
     
-    const allKeys = Object.keys(localStorage);
-    const handshakeKeys = allKeys.filter(key => key.startsWith('handshake-'));
-    const handshakes = handshakeKeys
-      .map(key => storage.get(key))
-      .filter(Boolean) as Handshake[];
+    const handshakeEntries = storage.getByPrefix('handshake-');
+    const handshakes = handshakeEntries.map(entry => entry.value).filter(Boolean) as Handshake[];
     
     return handshakes.filter(h => 
       (h.receiverDid === did || h.senderDid === did) && h.status === 'accepted'
