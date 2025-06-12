@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { APIKeyManager } from './APIKeyManager';
+import { AgentChat } from './AgentChat';
 import { useToast } from '@/hooks/use-toast';
 import { generateAIAvatar, getGeminiApiKey } from '@/lib/ai-utils';
 
@@ -18,6 +19,7 @@ export const ProfileEditor = () => {
   });
   const [isEditing, setIsEditing] = useState(false);
   const [isGeneratingAvatar, setIsGeneratingAvatar] = useState(false);
+  const [chatAgent, setChatAgent] = useState<any>(null);
 
   useEffect(() => {
     if (profile) {
@@ -107,7 +109,8 @@ export const ProfileEditor = () => {
     setIsGeneratingAvatar(true);
     
     try {
-      const prompt = `${formData.name}${formData.bio ? `, ${formData.bio}` : ''}`;
+      // Enhanced prompt with style options
+      const prompt = `${formData.name}${formData.bio ? `, ${formData.bio}` : ''}, professional avatar, friendly appearance`;
       const avatarUrl = await generateAIAvatar(prompt);
       
       setFormData({...formData, avatarUrl});
@@ -130,6 +133,17 @@ export const ProfileEditor = () => {
   if (!isEditing && profile) {
     return (
       <div className="space-y-8">
+        {/* Chat Modal */}
+        {chatAgent && (
+          <AgentChat
+            agentName={chatAgent.name}
+            capabilities={chatAgent.capabilities}
+            avatarUrl={chatAgent.avatar}
+            onClose={() => setChatAgent(null)}
+          />
+        )}
+
+        {/* Profile Display */}
         <div className="glass-card rounded-3xl p-8 animate-fade-in shadow-2xl border border-white/20">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-3xl font-bold text-foreground flex items-center gap-4">
@@ -218,15 +232,24 @@ export const ProfileEditor = () => {
                         Created: {new Date(agent.createdAt).toLocaleDateString()}
                       </p>
                     </div>
-                    <div className="flex flex-wrap gap-2">
-                      {agent.capabilities.map((capability) => (
-                        <span
-                          key={capability}
-                          className="bg-gradient-to-r from-purple-500/30 to-pink-500/30 text-purple-200 px-3 py-1 rounded-full text-sm font-medium border border-purple-400/30"
-                        >
-                          {capability}
-                        </span>
-                      ))}
+                    <div className="flex flex-col gap-3">
+                      <div className="flex flex-wrap gap-2">
+                        {agent.capabilities.map((capability) => (
+                          <span
+                            key={capability}
+                            className="bg-gradient-to-r from-purple-500/30 to-pink-500/30 text-purple-200 px-3 py-1 rounded-full text-sm font-medium border border-purple-400/30"
+                          >
+                            {capability}
+                          </span>
+                        ))}
+                      </div>
+                      <button
+                        onClick={() => setChatAgent(agent)}
+                        className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white font-semibold py-2 px-4 rounded-xl transition-all duration-200 hover:scale-105 flex items-center gap-2"
+                      >
+                        <span>💬</span>
+                        Chat with Agent
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -334,6 +357,9 @@ export const ProfileEditor = () => {
             className="bg-white/10 border-white/20 text-foreground placeholder-foreground/50 focus:border-primary focus:ring-2 focus:ring-primary/50 rounded-xl h-12"
             placeholder="https://example.com/avatar.jpg or generate with AI"
           />
+          <div className="text-sm text-foreground/60">
+            💡 Try prompts like: "robot avatar", "cartoon style", "professional headshot", "anime character"
+          </div>
         </div>
 
         <APIKeyManager onKeyChange={() => {}} />
