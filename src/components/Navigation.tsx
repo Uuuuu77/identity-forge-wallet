@@ -8,7 +8,8 @@ export const Navigation = ({ activeTab, setActiveTab }: NavigationProps) => {
   const tabs = [
     { id: 'dashboard', label: 'Dashboard', icon: '🏠' },
     { id: 'profile', label: 'Profile', icon: '👤' },
-    { id: 'lookup', label: 'Lookup', icon: '🔍' }
+    { id: 'lookup', label: 'Lookup', icon: '🔍' },
+    { id: 'agents', label: 'Agents', icon: '🤖' }
   ];
 
   return (

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useDID } from '@/contexts/DIDContext';
 import { Input } from '@/components/ui/input';
@@ -8,7 +7,7 @@ import { APIKeyManager } from './APIKeyManager';
 import { useToast } from '@/hooks/use-toast';
 
 export const ProfileEditor = () => {
-  const { did, profile, saveProfile, isLoading } = useDID();
+  const { did, profile, agents, saveProfile, isLoading } = useDID();
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: '',
@@ -102,7 +101,6 @@ export const ProfileEditor = () => {
       return;
     }
 
-    // This is where you'd implement the actual Gemini API call
     toast({
       title: "AI Avatar Generation",
       description: "AI avatar generation will be implemented with your API key.",
@@ -111,61 +109,120 @@ export const ProfileEditor = () => {
 
   if (!isEditing && profile) {
     return (
-      <div className="glass-card rounded-3xl p-8 animate-fade-in shadow-2xl border border-white/20">
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl font-bold text-foreground flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-2xl">
-              👤
-            </div>
-            Your Profile
-          </h2>
-          <button
-            onClick={() => setIsEditing(true)}
-            className="bg-white/20 hover:bg-white/30 text-foreground font-medium py-3 px-6 rounded-xl flex items-center gap-2 hover:scale-105 transition-all duration-200"
-          >
-            <span>✏️</span>
-            Edit Profile
-          </button>
-        </div>
-        
-        <div className="bg-gradient-to-br from-white/10 to-white/5 rounded-2xl p-8 border border-white/10 backdrop-blur-sm">
-          <div className="flex items-center space-x-8">
-            {(profile.avatarUrl || profile.avatar) ? (
-              <div className="relative">
-                <img 
-                  src={profile.avatarUrl || profile.avatar} 
-                  alt="Avatar" 
-                  className="w-24 h-24 rounded-2xl object-cover border-4 border-white/20 shadow-lg"
-                  onError={(e) => { 
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = 'none'; 
-                  }}
-                />
-                <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-green-500 border-2 border-white rounded-full"></div>
-              </div>
-            ) : (
-              <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-3xl border-4 border-white/20 shadow-lg">
+      <div className="space-y-8">
+        <div className="glass-card rounded-3xl p-8 animate-fade-in shadow-2xl border border-white/20">
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-3xl font-bold text-foreground flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-2xl">
                 👤
               </div>
-            )}
-            <div className="flex-1 space-y-4">
-              <h3 className="text-2xl font-bold text-foreground">{profile.name}</h3>
-              {profile.bio && (
-                <p className="text-foreground/80 leading-relaxed bg-black/20 rounded-lg p-3">{profile.bio}</p>
-              )}
-              {profile.email && (
-                <div className="flex items-center gap-3 text-foreground/70">
-                  <span className="text-lg">📧</span>
-                  <span className="font-medium">{profile.email}</span>
+              Your Profile
+            </h2>
+            <button
+              onClick={() => setIsEditing(true)}
+              className="bg-white/20 hover:bg-white/30 text-foreground font-medium py-3 px-6 rounded-xl flex items-center gap-2 hover:scale-105 transition-all duration-200"
+            >
+              <span>✏️</span>
+              Edit Profile
+            </button>
+          </div>
+          
+          <div className="bg-gradient-to-br from-white/10 to-white/5 rounded-2xl p-8 border border-white/10 backdrop-blur-sm">
+            <div className="flex items-center space-x-8">
+              {(profile.avatarUrl || profile.avatar) ? (
+                <div className="relative">
+                  <img 
+                    src={profile.avatarUrl || profile.avatar} 
+                    alt="Avatar" 
+                    className="w-24 h-24 rounded-2xl object-cover border-4 border-white/20 shadow-lg"
+                    onError={(e) => { 
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none'; 
+                    }}
+                  />
+                  <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-green-500 border-2 border-white rounded-full"></div>
+                </div>
+              ) : (
+                <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-3xl border-4 border-white/20 shadow-lg">
+                  👤
                 </div>
               )}
-              <div className="flex items-center gap-3 text-foreground/50 text-sm">
-                <span>🕒</span>
-                <span>Last updated: {new Date(profile.timestamp || Date.now()).toLocaleDateString()}</span>
+              <div className="flex-1 space-y-4">
+                <h3 className="text-2xl font-bold text-foreground">{profile.name}</h3>
+                {profile.bio && (
+                  <p className="text-foreground/80 leading-relaxed bg-black/20 rounded-lg p-3">{profile.bio}</p>
+                )}
+                {profile.email && (
+                  <div className="flex items-center gap-3 text-foreground/70">
+                    <span className="text-lg">📧</span>
+                    <span className="font-medium">{profile.email}</span>
+                  </div>
+                )}
+                <div className="flex items-center gap-3 text-foreground/50 text-sm">
+                  <span>🕒</span>
+                  <span>Last updated: {new Date(profile.timestamp || Date.now()).toLocaleDateString()}</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
+
+        {/* AI Agents Section */}
+        {agents.length > 0 && (
+          <div className="glass-card rounded-3xl p-8 animate-fade-in shadow-2xl border border-white/20">
+            <h3 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-xl">
+                🤖
+              </div>
+              My AI Agents ({agents.length})
+            </h3>
+            
+            <div className="grid gap-4">
+              {agents.map((agent) => (
+                <div
+                  key={agent.did}
+                  className="bg-gradient-to-r from-white/10 to-white/5 rounded-2xl p-6 border border-white/10 backdrop-blur-sm"
+                >
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center">
+                          🤖
+                        </div>
+                        <h4 className="text-lg font-semibold text-foreground">{agent.name}</h4>
+                      </div>
+                      <p className="text-sm text-foreground/60 font-mono break-all mb-2">
+                        {agent.did}
+                      </p>
+                      <p className="text-sm text-foreground/60">
+                        Created: {new Date(agent.createdAt).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {agent.capabilities.map((capability) => (
+                        <span
+                          key={capability}
+                          className="bg-gradient-to-r from-purple-500/30 to-pink-500/30 text-purple-200 px-3 py-1 rounded-full text-sm font-medium border border-purple-400/30"
+                        >
+                          {capability}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            <div className="mt-6 text-center">
+              <p className="text-foreground/60 text-sm mb-4">
+                Want to register more agents or manage connections?
+              </p>
+              <button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold py-2 px-6 rounded-xl transition-all duration-200 hover:scale-105">
+                Go to Agents Tab
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
