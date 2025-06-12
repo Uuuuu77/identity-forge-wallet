@@ -1,3 +1,4 @@
+
 import React, {
   createContext,
   useState,
@@ -17,6 +18,11 @@ interface DIDContextType {
   generateDID: () => Promise<void>;
   saveProfile: (profileData: ProfileFormData) => Promise<void>;
   registerAgent: (agentData: AgentFormData) => void;
+  loadProfile: (did: string) => Promise<{ profile: any; verified: boolean; cid: string } | null>;
+  initiateHandshake: (senderDid: string, receiverDid: string, scope: string) => void;
+  acceptHandshake: (handshakeId: string) => void;
+  getPendingHandshakes: () => Handshake[];
+  getAcceptedHandshakes: () => Handshake[];
 }
 
 interface Profile {
@@ -47,6 +53,15 @@ interface AgentProfile {
   description?: string;
   capabilities: string[];
   ownerDid: string;
+  createdAt: number;
+}
+
+export interface Handshake {
+  id: string;
+  senderDid: string;
+  receiverDid: string;
+  scope: string;
+  status: 'pending' | 'accepted' | 'rejected';
   createdAt: number;
 }
 
@@ -132,7 +147,44 @@ const DIDProvider = ({ children }: { children: React.ReactNode }) => {
     } finally {
       setIsLoading(false);
     }
-  }, [profile, toast]);
+  }, [toast]);
+
+  const loadProfile = useCallback(async (searchDid: string) => {
+    try {
+      // Check if it's the current user's DID
+      if (searchDid === did && profile) {
+        return {
+          profile,
+          verified: true,
+          cid: `cid-${Date.now()}`
+        };
+      }
+
+      // Check if it's an agent DID
+      if (searchDid.startsWith('did:agent:')) {
+        const agentKey = `agent-${searchDid}`;
+        const agentData = storage.get(agentKey);
+        if (agentData) {
+          return {
+            profile: {
+              name: agentData.name,
+              bio: agentData.description || 'AI Agent',
+              email: 'agent@example.com',
+              timestamp: agentData.createdAt
+            },
+            verified: true,
+            cid: `cid-agent-${Date.now()}`
+          };
+        }
+      }
+
+      // For other DIDs, return null (not found)
+      return null;
+    } catch (error) {
+      console.error('Error loading profile:', error);
+      return null;
+    }
+  }, [did, profile]);
 
   const registerAgent = useCallback((agentData: AgentFormData) => {
     if (!did) return;
@@ -159,6 +211,64 @@ const DIDProvider = ({ children }: { children: React.ReactNode }) => {
     });
   }, [did, toast]);
 
+  const initiateHandshake = useCallback((senderDid: string, receiverDid: string, scope: string) => {
+    const handshakeId = `hs-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    const handshake: Handshake = {
+      id: handshakeId,
+      senderDid,
+      receiverDid,
+      scope,
+      status: 'pending',
+      createdAt: Date.now()
+    };
+    
+    storage.set(`handshake-${handshakeId}`, handshake);
+    
+    toast({
+      title: "Handshake Initiated",
+      description: `Connection request sent to ${receiverDid.slice(0, 20)}...`,
+    });
+  }, [toast]);
+
+  const acceptHandshake = useCallback((handshakeId: string) => {
+    const handshake = storage.get(`handshake-${handshakeId}`) as Handshake;
+    if (handshake) {
+      const updatedHandshake = { ...handshake, status: 'accepted' as const };
+      storage.set(`handshake-${handshakeId}`, updatedHandshake);
+      
+      toast({
+        title: "Handshake Accepted",
+        description: `Connection established with ${handshake.senderDid.slice(0, 20)}...`,
+      });
+    }
+  }, [toast]);
+
+  const getPendingHandshakes = useCallback(() => {
+    if (!did) return [];
+    
+    const allKeys = Object.keys(localStorage);
+    const handshakeKeys = allKeys.filter(key => key.startsWith('handshake-'));
+    const handshakes = handshakeKeys
+      .map(key => storage.get(key))
+      .filter(Boolean) as Handshake[];
+    
+    return handshakes.filter(h => h.receiverDid === did && h.status === 'pending');
+  }, [did]);
+
+  const getAcceptedHandshakes = useCallback(() => {
+    if (!did) return [];
+    
+    const allKeys = Object.keys(localStorage);
+    const handshakeKeys = allKeys.filter(key => key.startsWith('handshake-'));
+    const handshakes = handshakeKeys
+      .map(key => storage.get(key))
+      .filter(Boolean) as Handshake[];
+    
+    return handshakes.filter(h => 
+      (h.receiverDid === did || h.senderDid === did) && h.status === 'accepted'
+    );
+  }, [did]);
+
   const value: DIDContextType = {
     did,
     profile,
@@ -166,7 +276,12 @@ const DIDProvider = ({ children }: { children: React.ReactNode }) => {
     isLoading,
     generateDID,
     saveProfile,
+    loadProfile,
     registerAgent,
+    initiateHandshake,
+    acceptHandshake,
+    getPendingHandshakes,
+    getAcceptedHandshakes,
   };
 
   return (
@@ -177,3 +292,4 @@ const DIDProvider = ({ children }: { children: React.ReactNode }) => {
 };
 
 export { DIDProvider, useDID };
+export type { AgentProfile, AgentFormData, ProfileFormData, Profile };
