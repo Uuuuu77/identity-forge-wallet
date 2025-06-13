@@ -56,6 +56,14 @@
     border: 1px solid rgba(255, 255, 255, 0.2);
   }
 
+  /* Legacy glass card for compatibility */
+  .glass-card {
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
   .btn-primary {
     background: linear-gradient(135deg, #8B5CF6, #EC4899);
     transition: all 0.2s ease;
@@ -75,5 +83,24 @@
   .btn-secondary:hover {
     background: rgba(255, 255, 255, 0.2);
     transform: translateY(-1px);
+  }
+}
+
+@layer utilities {
+  .animate-gradient-pan {
+    animation: gradient-pan 8s ease-in-out infinite;
+  }
+
+  @keyframes gradient-pan {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .hover-glow:hover {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+  }
+
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   }
 }

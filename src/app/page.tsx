@@ -7,6 +7,8 @@ import { DIDDashboard } from '@/components/DIDDashboard';
 import { ProfileEditor } from '@/components/ProfileEditor';
 import { DIDLookup } from '@/components/DIDLookup';
 import { AgentsTab } from '@/components/AgentsTab';
+import { MainContainer } from '@/components/layout/MainContainer';
+import { PageTransition } from '@/components/layout/PageTransition';
 
 export type TabType = 'dashboard' | 'profile' | 'lookup' | 'agents';
 
@@ -34,22 +36,28 @@ const HomePage = () => {
 
   return (
     <div className="dark">
-      <div className="min-h-screen p-2 sm:p-4 bg-background">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-6 sm:mb-8 animate-fade-in px-2">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-2 sm:mb-3 bg-gradient-to-r from-purple-200 to-pink-200 bg-clip-text text-transparent leading-tight">
-              DID Wallet & AI Agents
-            </h1>
-            <p className="text-white/70 text-base sm:text-lg">
-              Decentralized Identity & AI Agent Management
-            </p>
-          </div>
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 relative overflow-hidden">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-violet-900/30 via-indigo-900/10 to-transparent animate-pulse" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-purple-900/20 via-pink-900/5 to-transparent" />
+        
+        <div className="relative z-10 p-2 sm:p-4">
+          <MainContainer>
+            <div className="text-center mb-4 sm:mb-6 lg:mb-8 animate-fade-in">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2 sm:mb-3 bg-gradient-to-r from-purple-200 to-pink-200 bg-clip-text text-transparent leading-tight px-2">
+                DID Wallet & AI Agents
+              </h1>
+              <p className="text-white/70 text-sm sm:text-base lg:text-lg px-4">
+                Decentralized Identity & AI Agent Management
+              </p>
+            </div>
 
-          <Navigation activeTab={activeTab} setActiveTab={handleTabChange} />
-          
-          <div className="animate-fade-in">
-            {renderTabContent()}
-          </div>
+            <Navigation activeTab={activeTab} setActiveTab={handleTabChange} />
+            
+            <PageTransition>
+              {renderTabContent()}
+            </PageTransition>
+          </MainContainer>
         </div>
       </div>
     </div>
