@@ -3,7 +3,7 @@ import { Button, ButtonProps } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { forwardRef } from 'react';
 
-interface AnimatedButtonProps extends ButtonProps {
+interface AnimatedButtonProps extends Omit<ButtonProps, 'variant'> {
   variant?: 'primary' | 'secondary' | 'ghost';
   children: React.ReactNode;
 }
@@ -16,9 +16,13 @@ export const AnimatedButton = forwardRef<HTMLButtonElement, AnimatedButtonProps>
       ghost: 'hover:bg-white/10 text-white'
     };
 
+    // Map our custom variants to button component variants
+    const buttonVariant = variant === 'primary' ? 'default' : variant;
+
     return (
       <Button
         ref={ref}
+        variant={buttonVariant}
         className={cn(
           'transform transition-all duration-200 hover:scale-105 active:scale-95 font-semibold',
           variants[variant],
