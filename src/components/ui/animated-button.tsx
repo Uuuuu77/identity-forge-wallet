@@ -11,7 +11,7 @@ interface AnimatedButtonProps extends Omit<ButtonProps, 'variant'> {
 export const AnimatedButton = forwardRef<HTMLButtonElement, AnimatedButtonProps>(
   ({ children, className, variant = 'primary', ...props }, ref) => {
     const variants = {
-      primary: 'bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white',
+      primary: 'bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-500 hover:to-gray-600 text-white',
       secondary: 'bg-white/10 hover:bg-white/20 text-white border border-white/20',
       ghost: 'hover:bg-white/10 text-white'
     };

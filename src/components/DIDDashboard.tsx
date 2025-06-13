@@ -19,7 +19,7 @@ export const DIDDashboard = () => {
     return (
       <GlassCard variant="glow" className="text-center animate-fade-in shadow-2xl mb-20 sm:mb-8">
         <div className="mb-6 sm:mb-8">
-          <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-3xl sm:text-4xl shadow-lg">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-gray-600 to-gray-700 flex items-center justify-center text-3xl sm:text-4xl shadow-lg">
             🔐
           </div>
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-4 sm:mb-6">
@@ -46,7 +46,7 @@ export const DIDDashboard = () => {
     <div className="space-y-6 mb-20 sm:mb-8">
       <GlassCard variant="interactive" className="animate-fade-in shadow-2xl">
         <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-6 sm:mb-8 flex items-center gap-3 sm:gap-4">
-          <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-br from-green-500 to-blue-500 flex items-center justify-center text-lg sm:text-2xl">
+          <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-br from-gray-600 to-gray-700 flex items-center justify-center text-lg sm:text-2xl">
             🆔
           </div>
           <span className="break-words">Your Decentralized Identity</span>
@@ -95,22 +95,22 @@ export const DIDDashboard = () => {
             icon: '🔒',
             title: 'Cryptographically Secured',
             desc: 'Protected by advanced encryption',
-            gradient: 'from-green-500/20 to-emerald-500/20',
-            border: 'border-green-400/20'
+            gradient: 'from-gray-600/20 to-gray-700/20',
+            border: 'border-gray-500/20'
           },
           {
             icon: '🌐',
             title: 'Globally Resolvable',
             desc: 'Accessible worldwide instantly',
-            gradient: 'from-blue-500/20 to-cyan-500/20',
-            border: 'border-blue-400/20'
+            gradient: 'from-gray-500/20 to-gray-600/20',
+            border: 'border-gray-400/20'
           },
           {
             icon: '👤',
             title: 'Self-Sovereign',
             desc: 'You own and control your identity',
-            gradient: 'from-primary/20 to-accent/20',
-            border: 'border-primary/20'
+            gradient: 'from-gray-700/20 to-gray-800/20',
+            border: 'border-gray-600/20'
           }
         ].map((feature, index) => (
           <GlassCard

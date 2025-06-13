@@ -43,7 +43,7 @@
   }
 
   body {
-    @apply bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 text-foreground font-sans;
+    @apply bg-gradient-to-br from-gray-900 via-black to-gray-900 text-foreground font-sans;
     min-height: 100vh;
   }
 }
@@ -65,13 +65,13 @@
   }
 
   .btn-primary {
-    background: linear-gradient(135deg, #8B5CF6, #EC4899);
+    background: linear-gradient(135deg, #374151, #6B7280);
     transition: all 0.2s ease;
   }
 
   .btn-primary:hover {
     transform: translateY(-1px);
-    box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
   }
 
   .btn-secondary {
@@ -97,7 +97,7 @@
   }
 
   .hover-glow:hover {
-    box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
   }
 
   .text-shadow {

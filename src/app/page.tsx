@@ -36,15 +36,15 @@ const HomePage = () => {
 
   return (
     <div className="dark">
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 relative overflow-hidden">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden">
         {/* Animated background elements */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-violet-900/30 via-indigo-900/10 to-transparent animate-pulse" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-purple-900/20 via-pink-900/5 to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-gray-800/30 via-gray-900/10 to-transparent animate-pulse" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-gray-700/20 via-gray-800/5 to-transparent" />
         
         <div className="relative z-10 p-2 sm:p-4">
           <MainContainer>
             <div className="text-center mb-4 sm:mb-6 lg:mb-8 animate-fade-in">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2 sm:mb-3 bg-gradient-to-r from-purple-200 to-pink-200 bg-clip-text text-transparent leading-tight px-2">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2 sm:mb-3 bg-gradient-to-r from-gray-200 to-white bg-clip-text text-transparent leading-tight px-2">
                 DID Wallet & AI Agents
               </h1>
               <p className="text-white/70 text-sm sm:text-base lg:text-lg px-4">
