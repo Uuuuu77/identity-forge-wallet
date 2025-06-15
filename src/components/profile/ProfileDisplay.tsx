@@ -1,4 +1,6 @@
 
+import { GlassCard } from '@/components/ui/glass-card';
+
 interface Profile {
   name: string;
   bio?: string;
