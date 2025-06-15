@@ -111,12 +111,12 @@ export const DIDLookup = () => {
       </form>
 
       {error && (
-        <div className="bg-destructive/10 border border-destructive/20 rounded-xl p-4 mb-6 animate-fade-in">
+        <div className="bg-gradient-to-r from-red-500/20 to-pink-500/20 border border-red-400/30 rounded-xl p-4 sm:p-6 mb-6 animate-fade-in backdrop-blur-sm">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-destructive/20 flex items-center justify-center text-destructive-foreground">
+            <div className="w-8 h-8 rounded-lg bg-red-500/30 flex items-center justify-center">
               ⚠️
             </div>
-            <p className="text-destructive-foreground font-medium">{error}</p>
+            <p className="text-red-200 font-medium">{error}</p>
           </div>
         </div>
       )}
@@ -133,8 +133,8 @@ export const DIDLookup = () => {
                 </span>
               )}
             </h3>
-            <div className="px-3 py-1 rounded-full text-xs font-semibold bg-primary/20 text-primary flex items-center gap-2 border border-primary/30">
-              <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+            <div className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-semibold bg-green-500/20 text-green-200 flex items-center gap-2 border border-green-400/30">
+              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
               Verified
             </div>
           </div>
@@ -151,7 +151,7 @@ export const DIDLookup = () => {
                     target.style.display = 'none';
                   }}
                 />
-                <div className="absolute -bottom-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 bg-primary border-2 border-background rounded-full"></div>
+                <div className="absolute -bottom-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 bg-green-500 border-2 border-white rounded-full"></div>
               </div>
             ) : (
               <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-2xl text-white shadow-lg border-4 border-white/20 shrink-0">
