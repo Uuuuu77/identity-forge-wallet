@@ -1,7 +1,9 @@
+
 import { useState } from 'react';
 import { useDID } from '@/contexts/DIDContext';
 import { GlassCard } from '@/components/ui/glass-card';
 import { AnimatedButton } from '@/components/ui/animated-button';
+import { Loader2 } from 'lucide-react';
 
 export const DIDLookup = () => {
   const { loadProfile, did: currentDID } = useDID();
@@ -77,14 +79,14 @@ export const DIDLookup = () => {
             </div>
           </div>
           <div className="flex gap-2">
-            <button
+            <AnimatedButton
               type="submit"
               disabled={isSearching || !searchDid.trim()}
-              className="bg-primary hover:bg-primary/90 disabled:opacity-50 text-white font-bold py-3 px-6 sm:py-4 sm:px-8 rounded-xl transition-all duration-200 flex items-center justify-center gap-3 flex-1 sm:flex-none min-w-[140px] hover:scale-105 shadow-lg"
+              className="py-3 px-6 sm:py-4 sm:px-8 min-w-[140px] flex-1 sm:flex-none"
             >
               {isSearching ? (
                 <>
-                  <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                   Searching...
                 </>
               ) : (
@@ -93,7 +95,7 @@ export const DIDLookup = () => {
                   Search
                 </>
               )}
-            </button>
+            </AnimatedButton>
             {(searchResult || error) && (
               <AnimatedButton
                 type="button"
@@ -109,12 +111,12 @@ export const DIDLookup = () => {
       </form>
 
       {error && (
-        <div className="bg-gradient-to-r from-red-500/20 to-pink-500/20 border border-red-400/30 rounded-xl p-4 sm:p-6 mb-6 animate-fade-in backdrop-blur-sm">
+        <div className="bg-destructive/10 border border-destructive/20 rounded-xl p-4 mb-6 animate-fade-in">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-red-500/30 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-destructive/20 flex items-center justify-center text-destructive-foreground">
               ⚠️
             </div>
-            <p className="text-red-200 font-medium">{error}</p>
+            <p className="text-destructive-foreground font-medium">{error}</p>
           </div>
         </div>
       )}
@@ -131,8 +133,8 @@ export const DIDLookup = () => {
                 </span>
               )}
             </h3>
-            <div className="px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-semibold bg-green-500/20 text-green-200 flex items-center gap-2 border border-green-400/30">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+            <div className="px-3 py-1 rounded-full text-xs font-semibold bg-primary/20 text-primary flex items-center gap-2 border border-primary/30">
+              <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
               Verified
             </div>
           </div>
@@ -149,7 +151,7 @@ export const DIDLookup = () => {
                     target.style.display = 'none';
                   }}
                 />
-                <div className="absolute -bottom-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 bg-green-500 border-2 border-white rounded-full"></div>
+                <div className="absolute -bottom-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 bg-primary border-2 border-background rounded-full"></div>
               </div>
             ) : (
               <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-2xl text-white shadow-lg border-4 border-white/20 shrink-0">
