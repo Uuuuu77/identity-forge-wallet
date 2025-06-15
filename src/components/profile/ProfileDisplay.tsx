@@ -26,7 +26,7 @@ export const ProfileDisplay = ({ profile, onEdit }: ProfileDisplayProps) => {
   return (
     <div className="space-y-8">
       {/* Profile Display */}
-      <div className="glass-card rounded-3xl p-4 md:p-8 animate-fade-in shadow-2xl border border-white/20">
+      <GlassCard className="p-4 md:p-8 animate-fade-in shadow-2xl border border-white/20">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 md:mb-8 gap-4">
           <h2 className="text-2xl md:text-3xl font-bold text-foreground flex items-center gap-3 md:gap-4">
             <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-xl md:text-2xl shrink-0">
@@ -66,7 +66,7 @@ export const ProfileDisplay = ({ profile, onEdit }: ProfileDisplayProps) => {
             <div className="flex-1 space-y-3 md:space-y-4">
               <h3 className="text-xl md:text-2xl font-bold text-foreground break-words">{profile.name}</h3>
               {profile.bio && (
-                <p className="text-foreground/80 leading-relaxed bg-black/20 rounded-lg p-3 text-sm md:text-base">{profile.bio}</p>
+                <p className="text-foreground/80 leading-relaxed bg-black/20 rounded-lg p-3 text-sm md:text-base break-words">{profile.bio}</p>
               )}
               {profile.email && (
                 <div className="flex items-center justify-center md:justify-start gap-3 text-foreground/70">
@@ -81,7 +81,7 @@ export const ProfileDisplay = ({ profile, onEdit }: ProfileDisplayProps) => {
             </div>
           </div>
         </div>
-      </div>
+      </GlassCard>
     </div>
   );
 };
