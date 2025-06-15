@@ -10,15 +10,15 @@ export const AgentsTab = () => {
 
   if (!did) {
     return (
-      <div className="glass-card rounded-3xl p-12 text-center animate-fade-in shadow-2xl border border-white/20">
+      <div className="glass-card rounded-3xl p-6 md:p-12 text-center animate-fade-in shadow-2xl border border-white/20">
         <div className="mb-8">
           <div className="w-20 h-20 mx-auto mb-6 rounded-3xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center text-4xl shadow-lg">
             ⚠️
           </div>
-          <h2 className="text-3xl font-bold text-foreground mb-6">
+          <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-6">
             DID Required
           </h2>
-          <p className="text-foreground/80 mb-8 max-w-lg mx-auto leading-relaxed text-lg">
+          <p className="text-foreground/80 mb-8 max-w-lg mx-auto leading-relaxed text-base md:text-lg">
             You need to generate a DID first before managing AI agents. Please go to the Dashboard tab and generate your DID.
           </p>
         </div>
@@ -43,29 +43,29 @@ export const AgentsTab = () => {
           <div className="space-y-8">
             {/* Overview Cards */}
             <div className="grid md:grid-cols-3 gap-6">
-              <div className="glass-card rounded-2xl p-6 text-center">
+              <div className="glass-card rounded-2xl p-4 md:p-6 text-center">
                 <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-2xl">
                   🤖
                 </div>
-                <h3 className="text-xl font-bold text-foreground mb-2">My Agents</h3>
+                <h3 className="text-lg md:text-xl font-bold text-foreground mb-2">My Agents</h3>
                 <p className="text-3xl font-bold text-purple-300">{agents.length}</p>
                 <p className="text-foreground/60 text-sm mt-2">Registered Agents</p>
               </div>
               
-              <div className="glass-card rounded-2xl p-6 text-center">
+              <div className="glass-card rounded-2xl p-4 md:p-6 text-center">
                 <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-2xl">
                   🤝
                 </div>
-                <h3 className="text-xl font-bold text-foreground mb-2">Active Connections</h3>
+                <h3 className="text-lg md:text-xl font-bold text-foreground mb-2">Active Connections</h3>
                 <p className="text-3xl font-bold text-blue-300">0</p>
                 <p className="text-foreground/60 text-sm mt-2">Agent Handshakes</p>
               </div>
               
-              <div className="glass-card rounded-2xl p-6 text-center">
+              <div className="glass-card rounded-2xl p-4 md:p-6 text-center">
                 <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center text-2xl">
                   ⚡
                 </div>
-                <h3 className="text-xl font-bold text-foreground mb-2">Capabilities</h3>
+                <h3 className="text-lg md:text-xl font-bold text-foreground mb-2">Capabilities</h3>
                 <p className="text-3xl font-bold text-green-300">
                   {agents.reduce((acc, agent) => acc + agent.capabilities.length, 0)}
                 </p>
@@ -75,9 +75,9 @@ export const AgentsTab = () => {
 
             {/* My Agents List */}
             {agents.length > 0 && (
-              <div className="glass-card rounded-3xl p-8 animate-fade-in shadow-2xl border border-white/20">
-                <h3 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-xl">
+              <div className="glass-card rounded-3xl p-6 md:p-8 animate-fade-in shadow-2xl border border-white/20">
+                <h3 className="text-xl md:text-2xl font-bold text-foreground mb-6 flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-xl shrink-0">
                     🤖
                   </div>
                   My AI Agents
@@ -87,15 +87,15 @@ export const AgentsTab = () => {
                   {agents.map((agent) => (
                     <div
                       key={agent.did}
-                      className="bg-gradient-to-r from-white/10 to-white/5 rounded-2xl p-6 border border-white/10 backdrop-blur-sm"
+                      className="bg-gradient-to-r from-white/10 to-white/5 rounded-2xl p-4 sm:p-6 border border-white/10 backdrop-blur-sm"
                     >
                       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                        <div className="flex-1">
+                        <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-3 mb-2">
-                            <div className="w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center">
+                            <div className="w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center shrink-0">
                               🤖
                             </div>
-                            <h4 className="text-xl font-semibold text-foreground">{agent.name}</h4>
+                            <h4 className="text-lg sm:text-xl font-semibold text-foreground break-words">{agent.name}</h4>
                           </div>
                           <div className="space-y-2">
                             <p className="text-sm text-foreground/60 font-mono break-all">
@@ -106,11 +106,11 @@ export const AgentsTab = () => {
                             </p>
                           </div>
                         </div>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap gap-2 w-full md:w-auto md:justify-end">
                           {agent.capabilities.map((capability) => (
                             <span
                               key={capability}
-                              className="bg-gradient-to-r from-purple-500/30 to-pink-500/30 text-purple-200 px-3 py-1 rounded-full text-sm font-medium border border-purple-400/30"
+                              className="bg-gradient-to-r from-purple-500/30 to-pink-500/30 text-purple-200 px-3 py-1 rounded-full text-xs sm:text-sm font-medium border border-purple-400/30"
                             >
                               {capability}
                             </span>
@@ -127,13 +127,13 @@ export const AgentsTab = () => {
             <div className="grid md:grid-cols-2 gap-6">
               <button
                 onClick={() => setActiveSection('register')}
-                className="glass-card rounded-2xl p-8 text-left hover:scale-105 transition-all duration-200 border border-white/20 hover:border-purple-400/50"
+                className="glass-card rounded-2xl p-6 md:p-8 text-left hover:scale-105 transition-all duration-200 border border-white/20 hover:border-purple-400/50"
               >
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-2xl">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-2xl shrink-0">
                     ➕
                   </div>
-                  <h3 className="text-xl font-bold text-foreground">Register New Agent</h3>
+                  <h3 className="text-lg md:text-xl font-bold text-foreground">Register New Agent</h3>
                 </div>
                 <p className="text-foreground/70">
                   Create a new AI agent with specific capabilities and get a unique DID identifier.
@@ -142,13 +142,13 @@ export const AgentsTab = () => {
               
               <button
                 onClick={() => setActiveSection('connections')}
-                className="glass-card rounded-2xl p-8 text-left hover:scale-105 transition-all duration-200 border border-white/20 hover:border-blue-400/50"
+                className="glass-card rounded-2xl p-6 md:p-8 text-left hover:scale-105 transition-all duration-200 border border-white/20 hover:border-blue-400/50"
               >
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-2xl">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-2xl shrink-0">
                     🤝
                   </div>
-                  <h3 className="text-xl font-bold text-foreground">Manage Connections</h3>
+                  <h3 className="text-lg md:text-xl font-bold text-foreground">Manage Connections</h3>
                 </div>
                 <p className="text-foreground/70">
                   Initiate handshakes with other agents and manage your connection requests.

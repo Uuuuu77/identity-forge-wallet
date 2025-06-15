@@ -84,15 +84,15 @@ export const AgentRegistry = () => {
   const isFormValid = agentName.trim() && selectedCapabilities.length > 0;
 
   return (
-    <div className="glass-card rounded-3xl p-8 animate-fade-in shadow-2xl border border-white/20">
-      <h2 className="text-3xl font-bold text-foreground mb-8 flex items-center gap-4">
-        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-2xl">
+    <div className="glass-card rounded-3xl p-6 md:p-8 animate-fade-in shadow-2xl border border-white/20">
+      <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-6 sm:mb-8 flex items-center gap-4">
+        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-2xl shrink-0">
           🤖
         </div>
         Register AI Agent
       </h2>
       
-      <form onSubmit={handleSubmit} className="space-y-8">
+      <form onSubmit={handleSubmit} className="space-y-6">
         <AgentFormFields
           agentName={agentName}
           agentDescription={agentDescription}

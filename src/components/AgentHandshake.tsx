@@ -129,9 +129,9 @@ export const AgentHandshake = () => {
     <div className="space-y-8">
       {/* Pending Handshakes */}
       {pendingHandshakes.length > 0 && (
-        <div className="glass-card rounded-3xl p-8 animate-fade-in shadow-2xl border border-white/20">
-          <h3 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center text-xl">
+        <div className="glass-card rounded-3xl p-6 md:p-8 animate-fade-in shadow-2xl border border-white/20">
+          <h3 className="text-xl md:text-2xl font-bold text-foreground mb-6 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center text-xl shrink-0">
               ⏳
             </div>
             Pending Connection Requests
@@ -141,30 +141,30 @@ export const AgentHandshake = () => {
             {pendingHandshakes.map((handshake) => (
               <div
                 key={handshake.id}
-                className="bg-gradient-to-r from-white/10 to-white/5 rounded-2xl p-6 border border-white/10 backdrop-blur-sm"
+                className="bg-gradient-to-r from-white/10 to-white/5 rounded-2xl p-4 sm:p-6 border border-white/10 backdrop-blur-sm"
               >
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                  <div className="flex-1">
+                  <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3 mb-2">
                       <span className="text-lg">🤝</span>
-                      <h4 className="font-semibold text-foreground">Connection Request</h4>
+                      <h4 className="font-semibold text-foreground text-base sm:text-lg">Connection Request</h4>
                     </div>
-                    <div className="space-y-1 text-sm text-foreground/80">
-                      <p><strong>From:</strong> {formatDID(handshake.senderDid)}</p>
+                    <div className="space-y-1 text-sm text-foreground/80 break-words">
+                      <p><strong>From:</strong> <span className="font-mono break-all">{formatDID(handshake.senderDid)}</span></p>
                       <p><strong>Scope:</strong> {handshake.scope}</p>
                       <p><strong>Requested:</strong> {formatTimestamp(handshake.createdAt)}</p>
                     </div>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 self-start sm:self-center">
                     <Button
                       onClick={() => handleAcceptHandshake(handshake.id)}
-                      className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-semibold py-2 px-4 rounded-xl transition-all duration-200 hover:scale-105"
+                      className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-semibold py-2 px-4 rounded-xl transition-all duration-200 hover:scale-105 text-sm sm:text-base"
                     >
                       ✅ Accept
                     </Button>
                     <Button
                       variant="outline"
-                      className="bg-white/20 hover:bg-white/30 text-foreground border-white/20 hover:border-white/30 py-2 px-4 rounded-xl transition-all duration-200"
+                      className="bg-white/20 hover:bg-white/30 text-foreground border-white/20 hover:border-white/30 py-2 px-4 rounded-xl transition-all duration-200 text-sm sm:text-base"
                     >
                       ❌ Reject
                     </Button>
@@ -178,9 +178,9 @@ export const AgentHandshake = () => {
 
       {/* Accepted Connections */}
       {acceptedHandshakes.length > 0 && (
-        <div className="glass-card rounded-3xl p-8 animate-fade-in shadow-2xl border border-white/20">
-          <h3 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center text-xl">
+        <div className="glass-card rounded-3xl p-6 md:p-8 animate-fade-in shadow-2xl border border-white/20">
+          <h3 className="text-xl md:text-2xl font-bold text-foreground mb-6 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center text-xl shrink-0">
               ✅
             </div>
             Active Connections
@@ -192,19 +192,19 @@ export const AgentHandshake = () => {
                 key={handshake.id}
                 className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-2xl p-4 border border-green-400/20 backdrop-blur-sm"
               >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center shrink-0">
                       🔗
                     </div>
-                    <div className="text-sm">
+                    <div className="text-sm break-words">
                       <p className="font-medium text-foreground">
                         {handshake.senderDid === did ? formatDID(handshake.receiverDid) : formatDID(handshake.senderDid)}
                       </p>
                       <p className="text-foreground/60">{handshake.scope}</p>
                     </div>
                   </div>
-                  <div className="text-xs text-foreground/50">
+                  <div className="text-xs text-foreground/50 self-end sm:self-center">
                     {formatTimestamp(handshake.createdAt)}
                   </div>
                 </div>
@@ -215,9 +215,9 @@ export const AgentHandshake = () => {
       )}
 
       {/* Initiate New Handshake */}
-      <div className="glass-card rounded-3xl p-8 animate-fade-in shadow-2xl border border-white/20">
-        <h3 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-xl">
+      <div className="glass-card rounded-3xl p-6 md:p-8 animate-fade-in shadow-2xl border border-white/20">
+        <h3 className="text-xl md:text-2xl font-bold text-foreground mb-6 flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-xl shrink-0">
             🤝
           </div>
           Initiate Agent Connection
@@ -233,7 +233,7 @@ export const AgentHandshake = () => {
               type="text"
               value={receiverDid}
               onChange={(e) => setReceiverDid(e.target.value)}
-              className="bg-white/10 border-white/20 text-foreground placeholder-foreground/50 focus:border-primary focus:ring-2 focus:ring-primary/50 rounded-xl h-12"
+              className="bg-white/10 border-white/20 text-foreground placeholder-foreground/50 focus:border-primary focus:ring-2 focus:ring-primary/50 rounded-xl h-12 text-sm sm:text-base"
               placeholder="did:agent:example123... or did:key:z6Mk..."
               required
             />
@@ -243,7 +243,7 @@ export const AgentHandshake = () => {
             <Label className="text-foreground/90 font-semibold flex items-center gap-2">
               <span>🔐</span> Access Scope *
             </Label>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {SCOPE_OPTIONS.map((scope) => (
                 <button
                   key={scope.value}
@@ -257,7 +257,7 @@ export const AgentHandshake = () => {
                 >
                   <div className="flex items-center gap-2">
                     <span className="text-lg">{scope.icon}</span>
-                    <span className="text-sm font-medium">{scope.label}</span>
+                    <span className="text-xs sm:text-sm font-medium">{scope.label}</span>
                   </div>
                 </button>
               ))}
@@ -268,7 +268,7 @@ export const AgentHandshake = () => {
                 type="text"
                 value={customScope}
                 onChange={(e) => setCustomScope(e.target.value)}
-                className="bg-white/10 border-white/20 text-foreground placeholder-foreground/50 focus:border-primary focus:ring-2 focus:ring-primary/50 rounded-xl h-12"
+                className="bg-white/10 border-white/20 text-foreground placeholder-foreground/50 focus:border-primary focus:ring-2 focus:ring-primary/50 rounded-xl h-12 text-sm sm:text-base"
                 placeholder="Enter custom scope description"
                 required
               />
@@ -278,7 +278,7 @@ export const AgentHandshake = () => {
           <Button
             type="submit"
             disabled={isSubmitting || !receiverDid.trim() || !selectedScope || (selectedScope === 'custom' && !customScope.trim())}
-            className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 disabled:opacity-50 text-white font-bold py-4 px-8 rounded-xl text-lg w-full hover:scale-105 transition-all duration-200 shadow-lg flex items-center justify-center gap-2"
+            className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 disabled:opacity-50 text-white font-bold py-3 sm:py-4 px-8 rounded-xl text-base sm:text-lg w-full hover:scale-105 transition-all duration-200 shadow-lg flex items-center justify-center gap-2"
           >
             {isSubmitting ? (
               <>
