@@ -1,15 +1,25 @@
 
 import { useState, useEffect } from 'react';
 
-export interface Breakpoints {
+export interface ResponsiveInfo {
+  width: number;
+  height: number;
+  isMobile: boolean;
+  isTablet: boolean;
+  isDesktop: boolean;
   sm: boolean;
   md: boolean;
   lg: boolean;
   xl: boolean;
 }
 
-export function useResponsive() {
-  const [breakpoints, setBreakpoints] = useState<Breakpoints>({
+export function useResponsive(): ResponsiveInfo {
+  const [dimensions, setDimensions] = useState<ResponsiveInfo>({
+    width: 0,
+    height: 0,
+    isMobile: false,
+    isTablet: false,
+    isDesktop: false,
     sm: false,
     md: false,
     lg: false,
@@ -17,25 +27,33 @@ export function useResponsive() {
   });
 
   useEffect(() => {
-    const updateBreakpoints = () => {
-      const width = window.innerWidth;
-      setBreakpoints({
-        sm: width >= 640,
-        md: width >= 768,
-        lg: width >= 1024,
-        xl: width >= 1280,
-      });
+    const handleResize = () => {
+      if (typeof window !== 'undefined') {
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        setDimensions({
+          width,
+          height,
+          isMobile: width < 768,
+          isTablet: width >= 768 && width < 1024,
+          isDesktop: width >= 1024,
+          sm: width >= 640,
+          md: width >= 768,
+          lg: width >= 1024,
+          xl: width >= 1280,
+        });
+      }
     };
 
-    updateBreakpoints();
-    window.addEventListener('resize', updateBreakpoints);
-    return () => window.removeEventListener('resize', updateBreakpoints);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  return breakpoints;
+  return dimensions;
 }
 
 export function useIsMobile() {
-  const breakpoints = useResponsive();
-  return !breakpoints.md;
+  const { isMobile } = useResponsive();
+  return isMobile;
 }

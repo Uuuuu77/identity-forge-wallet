@@ -58,6 +58,11 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+        'violet-300': 'hsl(var(--violet-300))',
+        'violet-600': 'hsl(var(--primary))',
+        'violet-700': 'hsl(var(--violet-700))',
+        'gray-400': 'hsl(var(--gray-400))',
+        'gray-800': 'hsl(var(--gray-800))'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

@@ -1,4 +1,3 @@
-
 import { useDID } from '@/contexts/DIDContext';
 import { QRCodeDisplay } from './QRCodeDisplay';
 import { CopyButton } from './CopyButton';
@@ -17,7 +16,7 @@ export const DIDDashboard = () => {
 
   if (!did) {
     return (
-      <GlassCard variant="glow" className="text-center animate-fade-in shadow-2xl mb-20 sm:mb-8">
+      <GlassCard className="text-center animate-fade-in shadow-2xl mb-20 sm:mb-8">
         <div className="mb-6 sm:mb-8">
           <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-gray-600 to-gray-700 flex items-center justify-center text-3xl sm:text-4xl shadow-lg">
             🔐
@@ -44,7 +43,7 @@ export const DIDDashboard = () => {
 
   return (
     <div className="space-y-6 mb-20 sm:mb-8">
-      <GlassCard variant="interactive" className="animate-fade-in shadow-2xl">
+      <GlassCard className="animate-fade-in shadow-2xl">
         <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-6 sm:mb-8 flex items-center gap-3 sm:gap-4">
           <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-br from-gray-600 to-gray-700 flex items-center justify-center text-lg sm:text-2xl">
             🆔
@@ -115,7 +114,6 @@ export const DIDDashboard = () => {
         ].map((feature, index) => (
           <GlassCard
             key={index}
-            variant="interactive"
             className={`text-center bg-gradient-to-br ${feature.gradient} border ${feature.border} hover:scale-105 transition-all duration-200`}
           >
             <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 sm:mb-4 rounded-lg sm:rounded-xl bg-white/10 flex items-center justify-center text-xl sm:text-2xl">

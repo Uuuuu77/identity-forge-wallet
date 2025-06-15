@@ -71,6 +71,12 @@
     --input: 252 47% 25%;
     --ring: 271 80% 61%; /* Primary color for ring */
     
+    /* New theme colors */
+    --violet-300: 261 100% 75%;
+    --violet-700: 262 64% 46%;
+    --gray-400: 215 28% 63%;
+    --gray-800: 222 47% 11%;
+
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
