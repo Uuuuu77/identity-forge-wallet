@@ -12,7 +12,7 @@ export const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(
       <div
         ref={ref}
         className={cn(
-          'rounded-2xl p-6 border',
+          'rounded-2xl p-4 sm:p-6 border',
           'backdrop-blur-lg bg-gray-800/70',
           'border-white/10 shadow-xl',
           'transition-all duration-300 hover:shadow-violet-900/30',
