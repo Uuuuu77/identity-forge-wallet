@@ -41,7 +41,7 @@ const HomePage = () => {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-gray-800/30 via-gray-900/10 to-transparent animate-pulse" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-gray-700/20 via-gray-800/5 to-transparent" />
         
-        <div className="relative z-10 p-2 sm:p-4">
+        <div className="relative z-10 p-2 pb-24 sm:p-4">
           <MainContainer>
             <div className="text-center mb-4 sm:mb-6 lg:mb-8 animate-fade-in">
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2 sm:mb-3 bg-gradient-to-r from-gray-200 to-white bg-clip-text text-transparent leading-tight px-2">
