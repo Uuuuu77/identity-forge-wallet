@@ -1,10 +1,11 @@
+
 import storage from './storage';
 
 export const getGeminiApiKey = (): string | null => {
   return storage.get('gemini_api_key');
 };
 
-export const generateAIAvatar = async (prompt: string): Promise<string> => {
+export const generateAIAvatar = async (prompt: string, style: string): Promise<string> => {
   const apiKey = getGeminiApiKey();
   
   if (!apiKey) {
@@ -12,16 +13,12 @@ export const generateAIAvatar = async (prompt: string): Promise<string> => {
   }
 
   try {
-    // Enhanced prompt for better avatar descriptions
-    const enhancedPrompt = `Create a detailed visual description for an avatar based on this specific request: "${prompt}". 
-    
-    If the user mentioned:
-    - "robot": Focus on metallic surfaces, LED lights, mechanical parts, futuristic design
-    - "cartoon": Focus on stylized features, bright colors, exaggerated proportions, animated style
-    - "realistic": Focus on photorealistic human features
-    - "anime": Focus on large eyes, stylized hair, manga/anime art style
-    
-    Describe the style, colors, facial features, clothing, and overall appearance in detail. Be specific about the art style requested.`;
+    const enhancedPrompt = `Create a detailed visual description for an avatar. The user wants an avatar that is: "${prompt}".
+The desired artistic style is "${style}".
+
+Describe the visual elements of the avatar in a few sentences. Your description will be used to generate an SVG avatar, so be descriptive about shapes, colors, and features. For example, if the prompt is "a friendly robot programmer" and style is "Robot", you could describe: "A smiling robot with a blue metallic square head, round glowing green eyes, and a small antenna on its head."
+
+Generate a creative and descriptive text based on the user's prompt and selected style.`;
 
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`, {
       method: 'POST',
@@ -76,17 +73,22 @@ export const generateAIAvatar = async (prompt: string): Promise<string> => {
       throw new Error('No description generated from Gemini API');
     }
 
-    // Use different avatar generators based on the prompt style
-    const lowerPrompt = prompt.toLowerCase();
-    
-    if (lowerPrompt.includes('robot') || lowerPrompt.includes('mech')) {
-      return `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(description)}&backgroundColor=b6e3f4,c0aede,d1d4f9`;
-    } else if (lowerPrompt.includes('cartoon') || lowerPrompt.includes('fun')) {
-      return `https://api.dicebear.com/7.x/fun-emoji/svg?seed=${encodeURIComponent(description)}`;
-    } else if (lowerPrompt.includes('pixel') || lowerPrompt.includes('8bit')) {
-      return `https://api.dicebear.com/7.x/pixel-art/svg?seed=${encodeURIComponent(description)}`;
-    } else {
-      return `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(description)}`;
+    const encodedSeed = encodeURIComponent(description);
+    const baseApiUrl = "https://api.dicebear.com/7.x/";
+    const defaultOptions = "&backgroundColor=b6e3f4,c0aede,d1d4f9&backgroundType=gradientLinear";
+
+    switch (style) {
+        case 'robot':
+            return `${baseApiUrl}bottts-neutral/svg?seed=${encodedSeed}${defaultOptions}`;
+        case 'cartoon':
+            return `${baseApiUrl}fun-emoji/svg?seed=${encodedSeed}`;
+        case 'pixel':
+            return `${baseApiUrl}pixel-art/svg?seed=${encodedSeed}${defaultOptions}`;
+        case 'fantasy':
+            return `${baseApiUrl}adventurer/svg?seed=${encodedSeed}${defaultOptions}`;
+        case 'professional':
+        default:
+            return `${baseApiUrl}avataaars/svg?seed=${encodedSeed}`;
     }
   } catch (error) {
     console.error('AI Avatar generation error:', error);
